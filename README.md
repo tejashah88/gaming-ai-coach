@@ -1,4 +1,7 @@
 # Gaming AI Coach
+
+[![Watch the video](https://img.youtube.com/vi/CdrKLB4EhMk/maxresdefault.jpg)](https://youtu.be/CdrKLB4EhMk)
+
 A recreation of shounic's experiment where an AI model tells him what to do in Team Fortress 2, but with some extra stuff.
 
 If you're confused, watch his video about the original experiment: [TF2 but AI Makes EVERY Decision on What To Do
