@@ -1,7 +1,9 @@
 import pyttsx3
 
+from modules.text_to_speech.base.base_tts import BaseTTS
 
-class WindowsTTS:
+
+class WindowsTTS(BaseTTS):
     def __init__(self, voice_idx=0, rate=2.00, volume=1.00):
         self.engine = pyttsx3.init()
 
@@ -29,3 +31,7 @@ class WindowsTTS:
     def speak(self, text):
         self.engine.say(text)
         self.engine.runAndWait()
+
+
+    def cleanup(self):
+        self.engine.stop()

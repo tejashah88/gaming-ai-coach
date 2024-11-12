@@ -3,7 +3,9 @@ import time
 
 from dotenv import load_dotenv
 import numpy as np
+
 from langchain.chat_models import init_chat_model
+from elevenlabs.types import VoiceSettings
 
 from modules.image_proc.monitor_cam import MonitorCam
 from modules.ai_chatbot.llm_chatbot import LLMChatbot
@@ -12,6 +14,7 @@ from modules.text_to_speech.offline.windows_tts import WindowsTTS
 from modules.text_to_speech.online.elevenlabs_tts import ElevenLabsTTS
 from modules.overlay_ui.snapshot_overlay import SnapshotOverlay
 
+from modules.text_to_speech.tts_service import TextToSpeechService
 from utils.perf_timer import PerfTimer
 from utils.image_proc import numpy_to_base64, resize_image_min_length
 
@@ -39,15 +42,26 @@ monitor = MonitorCam(
 
 # Start a Text-to-speech service based on either ElevenLabs or the Windows API
 if USE_ELEVENLABS_TTS:
-    tts_service = ElevenLabsTTS(
+    online_tts = ElevenLabsTTS(
         voice=ELEVENLABS_VOICE_MODEL,
+        voice_settings=VoiceSettings(
+            stability=0.5,
+            similarity_boost=0.75,
+            style=0.0,
+            use_speaker_boost=False,
+        )
     )
 else:
-    tts_service = WindowsTTS(
+    online_tts = None
+
+tts_service = TextToSpeechService(
+    online_tts=online_tts,
+    offline_tts=WindowsTTS(
         voice_idx=0,
         rate=2.00,
         volume=1.00
     )
+)
 
 # Start the performance timer
 perf_timer = PerfTimer(
@@ -138,5 +152,5 @@ except KeyboardInterrupt:
     # Close the snapshot overlay
     snap_overlay.root.destroy()
 
-    # Stop the TTS engine
-    # tts_service.engine.stop()
+    # Stop the TTS engine (if applicable)
+    tts_service.cleanup()
