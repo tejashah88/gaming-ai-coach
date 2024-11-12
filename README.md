@@ -1,26 +1,39 @@
 # Gaming AI Coach
 
-[![Watch the video](https://img.youtube.com/vi/CdrKLB4EhMk/maxresdefault.jpg)](https://youtu.be/CdrKLB4EhMk)
+[![TF2 Demo](https://img.youtube.com/vi/CdrKLB4EhMk/maxresdefault.jpg)](https://youtu.be/CdrKLB4EhMk)
 
 A recreation of shounic's experiment where an AI model tells him what to do in Team Fortress 2, but with some extra stuff. If you're confused, watch his video about the original experiment: [TF2 but AI Makes EVERY Decision on What To Do
 ](https://www.youtube.com/watch?v=Z2eduTNisYA)
 
 This experiment takes a screenshot of your current gameplay, feeds it into a given LLM of your choice and gives you advice on how to proceed further. The fun part about it is that you can use this with **any game** and even **customize the prompts** to your liking. I've implemented shounic's original prompts, but it's very easy to add your own. You could for example make a coach that gives advice in a sarcastic or a dramatic manner. See the last 2 sections for more information.
 
+## Table of Contents
+* [NOTICE](#notice)
+* [Features](#features)
+* [Supported models and providers](#supported-models-and-providers)
+  * [Only supports own models](#only-supports-own-models)
+  * [Allows custom models](#allows-custom-models)
+* [Usage instructions](#usage-instructions)
+* [How to set this up (on Windows)](#how-to-set-this-up-on-windows)
+* [Adding your own prompts to an existing provider](#adding-your-own-prompts-to-an-existing-provider)
+* [Adding a new provider](#adding-a-new-provider)
+
 ## NOTICE
 This is very much a technical demo that I cobbled together within a few hours and as such is subject to odd bugs or annoyances. If you find any problems, please [make a GitHub issue](https://github.com/tejashah88/gaming-ai-coach/issues).
 
 ## Features
-- Works with OpenAI's GPT-4o model out-of-the-box
-- Shows a small overlay showing the taken screenshot and the model's response
-- Easy to make variations for your prompt to save for later and share with others (via a JSON file)
-- Can support other model providers (like from Anthropic or Google) thanks to the LangChain API
-  - See [this list of possible providers](https://python.langchain.com/docs/integrations/chat/#featured-providers) for more information. Note that the providers must support the "Multimodal" feature.
+* Works with OpenAI's GPT-4o model out-of-the-box
+* Shows a small overlay showing the taken screenshot and the model's response
+* Easy to make variations for your prompt to save for later and share with others (via a JSON file)
+* Support other model providers (like from Anthropic or Google) thanks to LangChain
+  * See "[Supported models and providers](#supported-models-and-providers)" for more information
 
 ## Supported models and providers
-The list of models has the baseline assumption that they support multimodal inputs. By default, the OpenAI LangChain package is installed but you can add provider-specific packages by doing `pip install langchain-{provider}`, substituting  `{provider}` with your desired one.
+The list of models has the baseline assumption that they support multimodal image inputs.
 
-Here's the full list of providers as supported by LangChain: https://python.langchain.com/docs/integrations/chat/#featured-providers
+By default, the OpenAI LangChain package is installed but you can add provider-specific packages by doing `pip install langchain-{provider}`, substituting  `{provider}` with your desired one.
+
+Here's the full list of providers as supported by LangChain: https://python.langchain.com/docs/integrations/chat/
 
 ### Only supports own models
 * OpenAI
@@ -113,7 +126,7 @@ pip install -r requirements.txt
 python -m main.gaming_coach
 ```
 
-## Adding your own prompts to an existing provider
+## Adding your own prompts
 You can add new prompts by either editing the existing JSON file in `prompts/general-experiment.json` or making a new JSON file with the following format:
 ```json
 {
@@ -148,17 +161,16 @@ PROMPT_CONFIG_NAME = 'sarcastic-custom'
 
 ## Adding a new provider
 This is similar to the previous section, except it'll require some knowledge of LangChain. The main tasks to complete are the following:
-1. Check [this list of possible providers](https://python.langchain.com/docs/integrations/chat/#featured-providers) to verify that the desired model supports multi-modality.
+1. Go to "[Supported models and providers](#supported-models-and-providers)" and double-check if your desired provider is supported. Remember that the models in question must support multimodal inputs.
 2. Add the necessary environment variables to your `.env` file for the chosen model provider.
-3. Create a new prompts config file as according to the previous section, and change `prompts_path` accordingly.
-4. Go to `main/gaming_coach.py` and find the following 4 lines.
+3. Go to `main/gaming_coach.py` and find the following 4 lines.
 ```python
 MODEL_PROVIDER = 'openai'
 MODEL_NAME = 'gpt-4o'
 ```
-5. Change the `MODEL_PROVIDER` and `MODEL_NAME` accordingly
+4. Change the `MODEL_PROVIDER` and `MODEL_NAME` accordingly
 ```python
 MODEL_PROVIDER = 'anthropic'
 MODEL_NAME = 'claude-3-5-sonnet-20240620'
 ```
-6. Re-run the coach again with `python -m main.gaming_coach`
+5. Re-run the coach again with `python -m main.gaming_coach`
