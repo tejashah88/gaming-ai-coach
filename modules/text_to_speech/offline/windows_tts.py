@@ -1,7 +1,7 @@
 import pyttsx3
 
 
-class TTSVoice:
+class WindowsTTS:
     def __init__(self, voice_idx=0, rate=2.00, volume=1.00):
         self.engine = pyttsx3.init()
 

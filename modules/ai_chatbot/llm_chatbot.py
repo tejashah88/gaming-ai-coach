@@ -1,6 +1,6 @@
 from langchain_core.messages import SystemMessage, HumanMessage
 
-from services.chatbot.structs import UserTextMessage, UserImageMessage
+from modules.ai_chatbot.structs import UserTextMessage, UserImageMessage
 
 class LLMChatbot:
     def __init__(self, chat_model, system_message):

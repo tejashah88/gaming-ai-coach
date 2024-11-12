@@ -42,16 +42,20 @@ python -m main.gaming_coach
 ```
 
 ## Adding your own prompts to an existing provider
-You can add new prompts by either editing the existing JSON file in `prompts/openai/gpt-4o/general-prompts.json` or making a new JSON file with the following format:
+You can add new prompts by either editing the existing JSON file in `prompts/general-experimentation.json` or making a new JSON file with the following format:
 ```json
 {
     "normal-coach": {
         "system-prompt": "You are coaching a novice on what to do in a video game. You need to tell him exactly what to do and what's the best course of action in the given moment. The person you are coaching is playing right now, so keep instructions to one sentence.",
-        "user-prompt": "This is a screenshot of the current situation. In one short sentence, please tell me exactly what I should do next? Deliver your repsonse concisely, neutrally and without bias."
+        "user-prompts": [
+            "This is a screenshot of the current situation. In one short sentence, please tell me exactly what I should do next? Deliver your repsonse concisely, neutrally and without bias."
+        ]
     },
     "an-extra-coach": {
         "system-prompt": "...",
-        "user-prompt": "..."
+        "user-prompts": [
+            "..."
+        ]
     },
     ...
 }
@@ -64,7 +68,6 @@ If you decide to go with the latter option and make a new file entirely, PLEASE 
 class OpenAIConfigCUSTOM(LLMConfig):
     provider        = 'openai'
     model           = 'gpt-4o'
-    prompts_path    = 'prompts/openai/gpt-4o/custom-prompts.json'
 
 
     def init_chat_model(self):

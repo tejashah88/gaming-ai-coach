@@ -1,6 +1,6 @@
 import dxcam
 
-from services.monitor_cam import MonitorCam
+from modules.image_proc.monitor_cam import MonitorCam
 
 print(dxcam.device_info())
 print(dxcam.output_info())

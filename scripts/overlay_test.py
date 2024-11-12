@@ -25,4 +25,5 @@ if __name__ == '__main__':
     )
 
     # Show the overlay
-    overlay_test.run_and_show()
+    overlay_test.show_ui()
+    overlay_test.root.mainloop()
