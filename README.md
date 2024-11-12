@@ -2,10 +2,10 @@
 
 [![TF2 Demo](https://img.youtube.com/vi/CdrKLB4EhMk/maxresdefault.jpg)](https://youtu.be/CdrKLB4EhMk)
 
-A recreation of shounic's experiment where an AI model tells him what to do in Team Fortress 2, but with some extra stuff. If you're confused, watch his video about the original experiment: [TF2 but AI Makes EVERY Decision on What To Do
-](https://www.youtube.com/watch?v=Z2eduTNisYA)
+An AI-powered backseat coach to fix your skill issue and/or ruin your day :). Powered by OpenAI's GPT-4o and ElevenLabs' TTS services out-of-the-box.
 
-This experiment takes a screenshot of your current gameplay, feeds it into a given LLM of your choice and gives you advice on how to proceed further. The fun part about it is that you can use this with **any game** and even **customize the prompts** to your liking. I've implemented shounic's original prompts, but it's very easy to add your own. You could for example make a coach that gives advice in a sarcastic or a dramatic manner. See the last 2 sections for more information.
+This project is a recreation of shounic's experiment where an AI model tells him what to do in Team Fortress 2, but with some extra stuff. If you're confused, watch his video about the original experiment: [TF2 but AI Makes EVERY Decision on What To Do
+](https://www.youtube.com/watch?v=Z2eduTNisYA). This experiment takes a screenshot of your current gameplay, feeds it into a given LLM of your choice and gives you advice on how to proceed further. The fun part about it is that you can use this with **any game** and even **customize the prompts** to your liking. I've implemented shounic's original prompts, but it's very easy to add your own. You could for example make a coach that gives advice in a sarcastic or a dramatic manner. See the last 2 sections for more information.
 
 ## Table of Contents
 * [NOTICE](#notice)
@@ -19,10 +19,12 @@ This experiment takes a screenshot of your current gameplay, feeds it into a giv
 This is very much a technical demo that I cobbled together within a few hours and as such is subject to odd bugs or annoyances. If you find any problems, please [make a GitHub issue](https://github.com/tejashah88/gaming-ai-coach/issues).
 
 ## Features
-* Works with OpenAI's GPT-4o model out-of-the-box
+* Works with **OpenAI's GPT-4o** model out-of-the-box
+* Supports **Elevenlabs' Text-to-speech** service or Windows' (as a fallback)
+  * Can specify your own instantly cloned voice models
 * Shows a small overlay showing the taken screenshot and the model's response
-* Easy to make variations for your prompt to save for later and share with others (via a JSON file)
-* Support other model providers (like from Anthropic or Google) thanks to LangChain
+* Easy to customize and experiment with different prompts (via JSON file)
+* Supports a variety of model providers (like from Anthropic or Google) thanks to LangChain
   * See "[Supported providers and models](SUPPORTED_PROVIDERS_MODELS.md)" for more information
 
 ## Setup instructions
@@ -31,20 +33,31 @@ This is very much a technical demo that I cobbled together within a few hours an
 3. Create a `.env` file and add the following contents, substituting `<<INSERT_API_KEY_HERE>>` with your copied API key
 ```yaml
 OPENAI_API_KEY=<<INSERT_API_KEY_HERE>>
+ELEVEN_API_KEY=<<INSERT_API_KEY_HERE>> # Optional
 ```
-4. Follow the steps below to run the coach
+4. Setup virtual environment and dependencies
 ```bash
-# Setup virtual environment and dependencies
 python -m venv env
 env\Scripts\activate.bat
 pip install -r requirements.txt
+```
+5. Edit the following lines in `gaming_coach.py` to your liking. If you plan to use Elevenlabs' TTS service, make sure to specify a `ELEVEN_API_KEY` key in your `.env` file.
+```python
+MODEL_PROVIDER = 'openai'
+MODEL_NAME = 'gpt-4o'
+PROMPTS_LIST_PATH = 'prompts/general-shounic.json'
+PROMPT_CONFIG_NAME = 'sarcastic-shounic'
 
-# Run the gaming coach
-python -m main.gaming_coach
+USE_ELEVENLABS_TTS = True
+ELEVENLABS_VOICE_MODEL = 'spongebob'
+```
+6. Run the gaming coach
+```bash
+python -m gaming_coach
 ```
 
 ## Usage instructions
-* `python -m main.gaming_coach` - Starts the application
+* `python -m gaming_coach` - Starts the application
 * `Ctrl+C` - Exits the application
 
 ## Adding your own prompts
@@ -68,23 +81,18 @@ You can add new prompts by either editing the existing JSON file in `prompts/gen
 ```
 
 If you decide to go with the latter option, please do the following:
-1. Go to `main/gaming_coach.py` and find the following 2 lines.
-```python
-PROMPTS_LIST_PATH = 'prompts/general-shounic.json'
-PROMPT_CONFIG_NAME = 'sarcastic-shounic'
-```
-2. Change the `OpenAIConfig` to the name of your custom class and the prompt config name accordingly.
+1. Go to `gaming_coach.py`, find the following 2 lines and change them accordingly.
 ```python
 PROMPTS_LIST_PATH = 'prompts/general-custom.json'
 PROMPT_CONFIG_NAME = 'sarcastic-custom'
 ```
-3. Re-run the coach again with `python -m main.gaming_coach`
+2. Re-run the coach again with `python -m gaming_coach`
 
 ## Changing to a different provider
 This is similar to the previous section, except it'll require some knowledge of LangChain. The main tasks to complete are the following:
 1. Go to "[Supported providers and models](SUPPORTED_PROVIDERS_MODELS.md)" and double-check if your desired provider is supported. Remember that the models in question must support multimodal inputs.
 2. Add the necessary environment variables to your `.env` file for the chosen model provider.
-3. Go to `main/gaming_coach.py` and find the following 2 lines.
+3. Go to `gaming_coach.py` and find the following 2 lines.
 ```python
 MODEL_PROVIDER = 'openai'
 MODEL_NAME = 'gpt-4o'
@@ -94,4 +102,4 @@ MODEL_NAME = 'gpt-4o'
 MODEL_PROVIDER = 'anthropic'
 MODEL_NAME = 'claude-3-5-sonnet-20240620'
 ```
-5. Re-run the coach again with `python -m main.gaming_coach`
+5. Re-run the coach again with `python -m gaming_coach`
