@@ -7,9 +7,9 @@ from langchain.chat_models import init_chat_model
 
 from modules.image_proc.monitor_cam import MonitorCam
 from modules.ai_chatbot.llm_chatbot import LLMChatbot
-from modules.ai_chatbot.structs import UserTextMessage, UserImageMessage
+from modules.ai_chatbot.messages import UserTextMessage, UserImageMessage
 from modules.text_to_speech.offline.windows_tts import WindowsTTS
-from ui.snapshot_overlay import SnapshotOverlay
+from modules.overlay_ui.snapshot_overlay import SnapshotOverlay
 
 from utils.perf_timer import PerfTimer
 from utils.image_proc import numpy_to_base64, resize_image_min_length

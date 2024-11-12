@@ -10,10 +10,10 @@ This experiment takes a screenshot of your current gameplay, feeds it into a giv
 ## Table of Contents
 * [NOTICE](#notice)
 * [Features](#features)
+* [Setup instructions](#setup-instructions)
 * [Usage instructions](#usage-instructions)
-* [How to set this up (on Windows)](#how-to-set-this-up-on-windows)
-* [Adding your own prompts to an existing provider](#adding-your-own-prompts-to-an-existing-provider)
-* [Adding a new provider](#adding-a-new-provider)
+* [Adding your own prompts](#adding-your-own-prompts)
+* [Changing to a different provider](#changing-to-a-different-provider)
 
 ## NOTICE
 This is very much a technical demo that I cobbled together within a few hours and as such is subject to odd bugs or annoyances. If you find any problems, please [make a GitHub issue](https://github.com/tejashah88/gaming-ai-coach/issues).
@@ -25,12 +25,7 @@ This is very much a technical demo that I cobbled together within a few hours an
 * Support other model providers (like from Anthropic or Google) thanks to LangChain
   * See "[Supported providers and models](SUPPORTED_PROVIDERS_MODELS.md)" for more information
 
-
-## Usage instructions
-* `python -m main.gaming_coach` - Starts the application
-* `Ctrl+C` - Exits the application
-
-## How to set this up (on Windows)
+## Setup instructions
 1. Get an OpenAI key
 2. Clone or fork this repo
 3. Create a `.env` file and add the following contents, substituting `<<INSERT_API_KEY_HERE>>` with your copied API key
@@ -47,6 +42,10 @@ pip install -r requirements.txt
 # Run the gaming coach
 python -m main.gaming_coach
 ```
+
+## Usage instructions
+* `python -m main.gaming_coach` - Starts the application
+* `Ctrl+C` - Exits the application
 
 ## Adding your own prompts
 You can add new prompts by either editing the existing JSON file in `prompts/general-experiment.json` or making a new JSON file with the following format:
@@ -81,11 +80,11 @@ PROMPT_CONFIG_NAME = 'sarcastic-custom'
 ```
 3. Re-run the coach again with `python -m main.gaming_coach`
 
-## Adding a new provider
+## Changing to a different provider
 This is similar to the previous section, except it'll require some knowledge of LangChain. The main tasks to complete are the following:
 1. Go to "[Supported providers and models](SUPPORTED_PROVIDERS_MODELS.md)" and double-check if your desired provider is supported. Remember that the models in question must support multimodal inputs.
 2. Add the necessary environment variables to your `.env` file for the chosen model provider.
-3. Go to `main/gaming_coach.py` and find the following 4 lines.
+3. Go to `main/gaming_coach.py` and find the following 2 lines.
 ```python
 MODEL_PROVIDER = 'openai'
 MODEL_NAME = 'gpt-4o'

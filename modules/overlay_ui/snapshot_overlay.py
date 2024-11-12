@@ -6,7 +6,7 @@ import signal
 
 from numpy.typing import NDArray
 
-from ui.components.tk_screencap_image import TkScreencapImage
+from modules.overlay_ui.components.tk_screencap_image import TkScreencapImage
 
 
 # Source: https://stackoverflow.com/a/66788780

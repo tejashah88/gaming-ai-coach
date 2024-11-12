@@ -1,7 +1,7 @@
 from PIL import Image
 import numpy as np
 
-from ui.snapshot_overlay import SnapshotOverlay
+from modules.overlay_ui.snapshot_overlay import SnapshotOverlay
 from utils.file_io import join_normalized_path
 
 
