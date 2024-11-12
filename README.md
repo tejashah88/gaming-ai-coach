@@ -10,9 +10,6 @@ This experiment takes a screenshot of your current gameplay, feeds it into a giv
 ## Table of Contents
 * [NOTICE](#notice)
 * [Features](#features)
-* [Supported models and providers](#supported-models-and-providers)
-  * [Only supports own models](#only-supports-own-models)
-  * [Allows custom models](#allows-custom-models)
 * [Usage instructions](#usage-instructions)
 * [How to set this up (on Windows)](#how-to-set-this-up-on-windows)
 * [Adding your own prompts to an existing provider](#adding-your-own-prompts-to-an-existing-provider)
@@ -26,82 +23,7 @@ This is very much a technical demo that I cobbled together within a few hours an
 * Shows a small overlay showing the taken screenshot and the model's response
 * Easy to make variations for your prompt to save for later and share with others (via a JSON file)
 * Support other model providers (like from Anthropic or Google) thanks to LangChain
-  * See "[Supported models and providers](#supported-models-and-providers)" for more information
-
-## Supported models and providers
-The list of models has the baseline assumption that they support multimodal image inputs.
-
-By default, the OpenAI LangChain package is installed but you can add provider-specific packages by doing `pip install langchain-{provider}`, substituting  `{provider}` with your desired one.
-
-Here's the full list of providers as supported by LangChain: https://python.langchain.com/docs/integrations/chat/
-
-### Only supports own models
-* OpenAI
-  * Provider info: https://platform.openai.com/docs/models
-  * Supported models
-    * GPT-4o
-    * GPT-4o mini
-  * LangChain package to install: `langchain-openai`
-  * LangChain documentation: https://python.langchain.com/docs/integrations/chat/openai/
-* Anthropic
-  * Provider info: https://docs.anthropic.com/en/docs/about-claude/models
-  * Supported models
-    * Claude 3.5 Sonnet
-    * Claude 3 Opus
-    * Claude 3 Sonnet
-    * Claude 3 Haiku
-  * LangChain package to install: `langchain-anthropic`
-  * LangChain documentation: https://python.langchain.com/docs/integrations/chat/anthropic/
-* Google Generative AI
-  * Provider info: https://ai.google.dev/gemini-api/docs/models/gemini
-  * Supported models
-    * Gemini 1.5 Flash
-    * Gemini 1.5 Flash-8B
-    * Gemini 1.5 Pro
-  * LangChain package to install: `langchain-google-genai`
-  * LangChain documentation: https://python.langchain.com/docs/integrations/chat/google_generative_ai/
-
-### Allows custom models
-* AWS Bedrock
-  * Provider info: https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-bedrock.html
-  * Supported models:
-    * Full list: https://docs.aws.amazon.com/bedrock/latest/userguide/models-features.html
-  * LangChain package to install: `langchain-aws`
-  * LangChain documentation: https://python.langchain.com/docs/integrations/chat/bedrock/
-* Google Vertex AI
-  * Provider info: https://cloud.google.com/vertex-ai/docs/generative-ai/model-reference/overview
-  * Supported models:
-    * Gemini 1.5 Flash
-    * Gemini 1.5 Flash-8B
-    * Gemini 1.5 Pro
-    * More in "Model Garden": https://console.cloud.google.com/vertex-ai/model-garden
-  * LangChain package to install: `langchain-google-vertexai`
-  * LangChain documentation: https://python.langchain.com/docs/integrations/chat/google_vertex_ai_palm/
-* Together AI
-  * Provider info: https://docs.together.ai/docs/vision-overview
-  * Supported models:
-    * Llama 3.2 Vision 11B
-    * Llama 3.2 Vision 90B
-    * "Serverless" list: https://docs.together.ai/docs/serverless-models
-    * "Dedicated" list: https://docs.together.ai/docs/dedicated-models
-  * LangChain package to install: `langchain-together`
-  * LangChain documentation: https://python.langchain.com/docs/integrations/chat/together/
-* HuggingFace
-  * Provider info: https://huggingface.co/models
-  * Supported models:
-    * Llama 3.2 Vision 11B
-    * Llama 3.2 Vision 90B
-    * Full list: https://huggingface.co/models
-  * LangChain package to install: `langchain-huggingface`
-  * LangChain documentation: https://python.langchain.com/docs/integrations/chat/huggingface/
-* Ollama
-  * Provider info: https://github.com/ollama/ollama
-  * Supported models:
-    * Llama 3.2 Vision 11B
-    * Llama 3.2 Vision 90B
-    * Full list: https://github.com/ollama/ollama#model-library
-  * LangChain package to install: `langchain-ollama`
-  * LangChain documentation: https://python.langchain.com/docs/integrations/chat/ollama/
+  * See "[Supported providers and models](SUPPORTED_PROVIDERS_MODELS.md)" for more information
 
 
 ## Usage instructions
@@ -161,7 +83,7 @@ PROMPT_CONFIG_NAME = 'sarcastic-custom'
 
 ## Adding a new provider
 This is similar to the previous section, except it'll require some knowledge of LangChain. The main tasks to complete are the following:
-1. Go to "[Supported models and providers](#supported-models-and-providers)" and double-check if your desired provider is supported. Remember that the models in question must support multimodal inputs.
+1. Go to "[Supported providers and models](SUPPORTED_PROVIDERS_MODELS.md)" and double-check if your desired provider is supported. Remember that the models in question must support multimodal inputs.
 2. Add the necessary environment variables to your `.env` file for the chosen model provider.
 3. Go to `main/gaming_coach.py` and find the following 4 lines.
 ```python
