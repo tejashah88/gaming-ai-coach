@@ -1,21 +1,4 @@
 from dataclasses import dataclass
-from abc import ABC, abstractmethod
-
-from langchain_core.language_models.chat_models import BaseChatModel
-
-
-class LLMConfig(ABC):
-    provider: str
-    model: str
-
-
-    def __init__(self, env_config = {}):
-        self.env_config = env_config
-
-
-    @abstractmethod
-    def init_chat_model(self) -> BaseChatModel:
-        pass
 
 
 @dataclass

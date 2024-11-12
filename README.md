@@ -2,9 +2,7 @@
 
 [![Watch the video](https://img.youtube.com/vi/CdrKLB4EhMk/maxresdefault.jpg)](https://youtu.be/CdrKLB4EhMk)
 
-A recreation of shounic's experiment where an AI model tells him what to do in Team Fortress 2, but with some extra stuff.
-
-If you're confused, watch his video about the original experiment: [TF2 but AI Makes EVERY Decision on What To Do
+A recreation of shounic's experiment where an AI model tells him what to do in Team Fortress 2, but with some extra stuff. If you're confused, watch his video about the original experiment: [TF2 but AI Makes EVERY Decision on What To Do
 ](https://www.youtube.com/watch?v=Z2eduTNisYA)
 
 This experiment takes a screenshot of your current gameplay, feeds it into a given LLM of your choice and gives you advice on how to proceed further. The fun part about it is that you can use this with **any game** and even **customize the prompts** to your liking. I've implemented shounic's original prompts, but it's very easy to add your own. You could for example make a coach that gives advice in a sarcastic or a dramatic manner. See the last 2 sections for more information.
@@ -18,6 +16,80 @@ This is very much a technical demo that I cobbled together within a few hours an
 - Easy to make variations for your prompt to save for later and share with others (via a JSON file)
 - Can support other model providers (like from Anthropic or Google) thanks to the LangChain API
   - See [this list of possible providers](https://python.langchain.com/docs/integrations/chat/#featured-providers) for more information. Note that the providers must support the "Multimodal" feature.
+
+## Supported models and providers
+The list of models has the baseline assumption that they support multimodal inputs. By default, the OpenAI LangChain package is installed but you can add provider-specific packages by doing `pip install langchain-{provider}`, substituting  `{provider}` with your desired one.
+
+Here's the full list of providers as supported by LangChain: https://python.langchain.com/docs/integrations/chat/#featured-providers
+
+### Only supports own models
+* OpenAI
+  * Provider info: https://platform.openai.com/docs/models
+  * Supported models
+    * GPT-4o
+    * GPT-4o mini
+  * LangChain package to install: `langchain-openai`
+  * LangChain documentation: https://python.langchain.com/docs/integrations/chat/openai/
+* Anthropic
+  * Provider info: https://docs.anthropic.com/en/docs/about-claude/models
+  * Supported models
+    * Claude 3.5 Sonnet
+    * Claude 3 Opus
+    * Claude 3 Sonnet
+    * Claude 3 Haiku
+  * LangChain package to install: `langchain-anthropic`
+  * LangChain documentation: https://python.langchain.com/docs/integrations/chat/anthropic/
+* Google Generative AI
+  * Provider info: https://ai.google.dev/gemini-api/docs/models/gemini
+  * Supported models
+    * Gemini 1.5 Flash
+    * Gemini 1.5 Flash-8B
+    * Gemini 1.5 Pro
+  * LangChain package to install: `langchain-google-genai`
+  * LangChain documentation: https://python.langchain.com/docs/integrations/chat/google_generative_ai/
+
+### Allows custom models
+* AWS Bedrock
+  * Provider info: https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-bedrock.html
+  * Supported models:
+    * Full list: https://docs.aws.amazon.com/bedrock/latest/userguide/models-features.html
+  * LangChain package to install: `langchain-aws`
+  * LangChain documentation: https://python.langchain.com/docs/integrations/chat/bedrock/
+* Google Vertex AI
+  * Provider info: https://cloud.google.com/vertex-ai/docs/generative-ai/model-reference/overview
+  * Supported models:
+    * Gemini 1.5 Flash
+    * Gemini 1.5 Flash-8B
+    * Gemini 1.5 Pro
+    * More in "Model Garden": https://console.cloud.google.com/vertex-ai/model-garden
+  * LangChain package to install: `langchain-google-vertexai`
+  * LangChain documentation: https://python.langchain.com/docs/integrations/chat/google_vertex_ai_palm/
+* Together AI
+  * Provider info: https://docs.together.ai/docs/vision-overview
+  * Supported models:
+    * Llama 3.2 Vision 11B
+    * Llama 3.2 Vision 90B
+    * "Serverless" list: https://docs.together.ai/docs/serverless-models
+    * "Dedicated" list: https://docs.together.ai/docs/dedicated-models
+  * LangChain package to install: `langchain-together`
+  * LangChain documentation: https://python.langchain.com/docs/integrations/chat/together/
+* HuggingFace
+  * Provider info: https://huggingface.co/models
+  * Supported models:
+    * Llama 3.2 Vision 11B
+    * Llama 3.2 Vision 90B
+    * Full list: https://huggingface.co/models
+  * LangChain package to install: `langchain-huggingface`
+  * LangChain documentation: https://python.langchain.com/docs/integrations/chat/huggingface/
+* Ollama
+  * Provider info: https://github.com/ollama/ollama
+  * Supported models:
+    * Llama 3.2 Vision 11B
+    * Llama 3.2 Vision 90B
+    * Full list: https://github.com/ollama/ollama#model-library
+  * LangChain package to install: `langchain-ollama`
+  * LangChain documentation: https://python.langchain.com/docs/integrations/chat/ollama/
+
 
 ## Usage instructions
 * `python -m main.gaming_coach` - Starts the application
@@ -42,7 +114,7 @@ python -m main.gaming_coach
 ```
 
 ## Adding your own prompts to an existing provider
-You can add new prompts by either editing the existing JSON file in `prompts/general-experimentation.json` or making a new JSON file with the following format:
+You can add new prompts by either editing the existing JSON file in `prompts/general-experiment.json` or making a new JSON file with the following format:
 ```json
 {
     "normal-coach": {
@@ -61,54 +133,32 @@ You can add new prompts by either editing the existing JSON file in `prompts/gen
 }
 ```
 
-If you decide to go with the latter option and make a new file entirely, PLEASE DO THE FOLLOWING:
-1. Go to `main/model_configs.py`
-2. Make a copy of the `OpenAIConfig` class and only change the `prompts_path` field to the relative path of the new custom prompts file. Here's an example of what that should look like:
+If you decide to go with the latter option, please do the following:
+1. Go to `main/gaming_coach.py` and find the following 2 lines.
 ```python
-class OpenAIConfigCUSTOM(LLMConfig):
-    provider        = 'openai'
-    model           = 'gpt-4o'
-
-
-    def init_chat_model(self):
-        api_key = get_from_dict_or_env(self.env_config, 'openai_api_key', 'OPENAI_API_KEY')
-
-        if api_key is None:
-            raise Exception('The "OPENAI_API_KEY" must be defined in your environment file')
-
-        return ChatOpenAI(
-            api_key=SecretStr(api_key),
-            model=self.model,
-        )
-```
-3. Go to `main/gaming_coach.py` and find the following 2 lines.
-```python
-MODEL_CONFIG = OpenAIConfig()
+PROMPTS_LIST_PATH = 'prompts/general-shounic.json'
 PROMPT_CONFIG_NAME = 'sarcastic-shounic'
 ```
-4. Change the `OpenAIConfig` to the name of your custom class and the prompt config name accordingly.
+2. Change the `OpenAIConfig` to the name of your custom class and the prompt config name accordingly.
 ```python
-MODEL_CONFIG = OpenAIConfigCUSTOM()
-PROMPT_CONFIG_NAME = 'normal-coach'
+PROMPTS_LIST_PATH = 'prompts/general-custom.json'
+PROMPT_CONFIG_NAME = 'sarcastic-custom'
 ```
-5. Re-run the coach again with `python -m main.gaming_coach`
+3. Re-run the coach again with `python -m main.gaming_coach`
 
 ## Adding a new provider
 This is similar to the previous section, except it'll require some knowledge of LangChain. The main tasks to complete are the following:
 1. Check [this list of possible providers](https://python.langchain.com/docs/integrations/chat/#featured-providers) to verify that the desired model supports multi-modality.
-2. Create a new `LLMConfig` similar to the above and name the new class appropriately.
-3. Change the fields where appropriate (such as `provider`, `model` and `prompts_path`).
-4. Change the implementation of `init_chat_model` to create a new instance of the LangChain-based chat model. This can be just about anything as long as it supports the [`langchain_core.language_models.chat_models.BaseChatModel`](https://python.langchain.com/api_reference/core/language_models/langchain_core.language_models.chat_models.BaseChatModel.html) interface.
-   * If there are any changes to the environment variables loaded, make sure that they are added accordingly in your `.env` file.
-5. Create a new prompts config file as according to the previous section, and change `prompts_path` accordingly.
-6. Go to `main/gaming_coach.py` and find the following 2 lines.
+2. Add the necessary environment variables to your `.env` file for the chosen model provider.
+3. Create a new prompts config file as according to the previous section, and change `prompts_path` accordingly.
+4. Go to `main/gaming_coach.py` and find the following 4 lines.
 ```python
-MODEL_CONFIG = OpenAIConfig()
-PROMPT_CONFIG_NAME = 'sarcastic-shounic'
+MODEL_PROVIDER = 'openai'
+MODEL_NAME = 'gpt-4o'
 ```
-7. Change the `OpenAIConfig` to the name of your custom class
+5. Change the `MODEL_PROVIDER` and `MODEL_NAME` accordingly
 ```python
-MODEL_CONFIG = AnthropicAIConfig()
-PROMPT_CONFIG_NAME = 'sarcastic-sonnet'
+MODEL_PROVIDER = 'anthropic'
+MODEL_NAME = 'claude-3-5-sonnet-20240620'
 ```
-8. Re-run the coach again with `python -m main.gaming_coach`
+6. Re-run the coach again with `python -m main.gaming_coach`

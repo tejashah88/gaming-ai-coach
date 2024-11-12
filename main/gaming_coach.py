@@ -3,6 +3,7 @@ import time
 
 from dotenv import load_dotenv
 import numpy as np
+from langchain.chat_models import init_chat_model
 
 from modules.image_proc.monitor_cam import MonitorCam
 from modules.ai_chatbot.llm_chatbot import LLMChatbot
@@ -12,8 +13,6 @@ from ui.snapshot_overlay import SnapshotOverlay
 
 from utils.perf_timer import PerfTimer
 from utils.image_proc import numpy_to_base64, resize_image_min_length
-
-from main.model_configs import OpenAIConfig
 
 # Start a virtual camera to start taking screenshots of the game
 monitor = MonitorCam(
@@ -38,39 +37,44 @@ perf_timer = PerfTimer(
 load_dotenv('.env')
 
 # Load LLM Config and related settings
-MODEL_CONFIG = OpenAIConfig()
+MODEL_PROVIDER = 'openai'
+MODEL_NAME = 'gpt-4o'
+PROMPTS_LIST_PATH = 'prompts/general-shounic.json'
 PROMPT_CONFIG_NAME = 'sarcastic-shounic'
 
 # Load list of prompts and fetch system and user prompts with given config name
-with open('prompts/general-shounic.json', 'r') as fp:
+with open(PROMPTS_LIST_PATH, 'r') as fp:
     PROMPTS_LIST = json.load(fp)
 
 current_prompt_config = PROMPTS_LIST[PROMPT_CONFIG_NAME]
 
 # Initialize the LLM model interface
 chatbot = LLMChatbot(
-    chat_model=MODEL_CONFIG.init_chat_model(),
+    chat_model=init_chat_model(
+        model_provider=MODEL_PROVIDER,
+        model=MODEL_NAME
+    ),
     system_message=current_prompt_config['system-prompt'],
 )
 
-settings_dict={
-    'version': 0.1,
+CHATBOT_SETTINGS = {
     'model': {
-        'provider': MODEL_CONFIG.provider,
-        'model': MODEL_CONFIG.model,
-        'api_params': chatbot.chat_model._default_params,
+        'provider': MODEL_PROVIDER,
+        'name': MODEL_NAME,
+        'params': chatbot.chat_model._identifying_params,
     },
     'prompt': {
+        'list_path': PROMPTS_LIST_PATH,
         'config_name': PROMPT_CONFIG_NAME,
         'config': current_prompt_config,
     }
 }
+print(json.dumps(CHATBOT_SETTINGS, indent=2))
 
 
 # Create the snapshot overlay to display the screenshot and bot response
 snap_overlay = SnapshotOverlay()
 # snap_overlay.prevent_freezing()
-
 
 print(f'Starting coach with configuration "{PROMPT_CONFIG_NAME}"...')
 tts_service.speak('Ready to coach!')
@@ -88,7 +92,8 @@ try:
         frame = monitor.grab_screenshot()
         perf_timer.print_elapsed_time_and_reset('Screencap capture')
 
-        # Reduze the smallest side length to 768 (otherwise OpenAI would do it anyways) and convert the screencap to base 64
+        # Reduce the smallest side length to 768 (otherwise OpenAI would do it anyways) and convert the screencap to base 64
+        # - See https://platform.openai.com/docs/guides/vision#calculating-costs for mode info
         resized_frame = resize_image_min_length(frame, height=768)
         b64_img = numpy_to_base64(resized_frame)
         perf_timer.print_elapsed_time_and_reset('Screencap to base 64')

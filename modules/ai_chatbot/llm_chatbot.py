@@ -8,7 +8,7 @@ class LLMChatbot:
         self.system_message = system_message
 
 
-    def send_message(self, user_msgs: list[UserTextMessage | UserImageMessage]):
+    def send_message(self, user_msgs: list[UserTextMessage | UserImageMessage], configurable_settings={}):
         input_messages = []
 
         if self.system_message:
@@ -25,5 +25,9 @@ class LLMChatbot:
             )
         ]
 
-        response = self.chat_model.invoke(input_messages)
+        response = self.chat_model.invoke(
+            input_messages,
+            config = {'configurable': configurable_settings}
+        )
+
         return response.content
