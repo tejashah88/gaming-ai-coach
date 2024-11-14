@@ -17,14 +17,13 @@ load_dotenv('.env')
 
 voice_model_name = input('Name of voice model: ')
 samples_path = input('Folder path with audio samples: ')
-# samples_path = r'C:\Users\Tejas\Downloads\Squidward Tentacles'
 
 # Gather all audio files within folder
 all_found_audio_files = sum([
+    glob.glob(join_normalized_path(samples_path, '*.wav')),
     glob.glob(join_normalized_path(samples_path, '*.mp3')),
     glob.glob(join_normalized_path(samples_path, '*.flv')),
     glob.glob(join_normalized_path(samples_path, '*.ogg')),
-    glob.glob(join_normalized_path(samples_path, '*.wav')),
     glob.glob(join_normalized_path(samples_path, '*.raw')),
 ], [])
 
@@ -34,7 +33,7 @@ for audio_file_path in all_found_audio_files:
     file_ext = os.path.splitext(audio_file_path)[1][1:].strip().lower()
     combined_audio += AudioSegment.from_file(audio_file_path, format=file_ext)
 
-combined_audio.export(f'{voice_model_name}.wav', format='wav')
+combined_audio.export(f'audio_tools/output/combined/{voice_model_name}.wav', format='wav')
 
 # NOTE: Elevenlabs only allows uploading up to 25 audio samples of maximum of 10 MBs each. Therefore
 # we need to determine the bytes/second and generate audio sample chunks of the appropriate size.
@@ -50,7 +49,7 @@ audio_segments = make_chunks(combined_audio, chunk_length=sample_length_sec * 10
 with tempfile.TemporaryDirectory() as temp_dir_name:
     print(f'  Outputting audio segments to "{temp_dir_name}"...')
     for (i, segment) in enumerate(audio_segments):
-        segment.export(f'{temp_dir_name}/output_{i+1}.wav', format='wav') # type: ignore
+        segment.export(f'audio_tools/output/split/output_{i+1}.wav', format='wav') # type: ignore
 
     elevenlabs_client = ElevenLabs(api_key=os.getenv('ELEVEN_API_KEY'))
 

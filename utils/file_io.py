@@ -7,7 +7,3 @@ def join_normalized_path(base_dir, *paths):
             base_dir, *paths
         )
     )
-
-def ensure_folders(path):
-    if not os.path.exists(path):
-        os.makedirs(path, exist_ok=True)

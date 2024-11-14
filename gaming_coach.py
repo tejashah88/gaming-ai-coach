@@ -17,7 +17,7 @@ from modules.overlay_ui.snapshot_overlay import SnapshotOverlay
 
 from modules.text_to_speech.tts_service import TextToSpeechService
 from utils.perf_timer import PerfTimer
-from utils.image_proc import numpy_to_base64, resize_image_min_length
+from utils import image_proc
 
 
 # Load environment variables
@@ -117,8 +117,8 @@ print(json.dumps(CHATBOT_SETTINGS, indent=2))
 
 # Create the snapshot overlay to display the screenshot and bot response
 snap_overlay = SnapshotOverlay()
-# snap_overlay.prevent_freezing()
 snap_overlay.hide_ui()
+# snap_overlay.prevent_freezing()
 
 print(f'Starting coach with configuration "{PROMPT_CONFIG_NAME}"...')
 tts_service.speak('Ready to coach!')
@@ -138,8 +138,8 @@ try:
 
         # Reduce the smallest side length to 768 (otherwise OpenAI would do it anyways) and convert the screencap to base 64
         # - See https://platform.openai.com/docs/guides/vision#calculating-costs for mode info
-        resized_frame = resize_image_min_length(frame, height=768)
-        b64_img = numpy_to_base64(resized_frame)
+        resized_frame = image_proc.resize_image_min_length(frame, height=768)
+        b64_img = image_proc.numpy_to_base64(resized_frame)
         perf_timer.print_elapsed_time_and_reset('Screencap to base 64')
 
         # Ask the chatbot to process the image with the given prompts

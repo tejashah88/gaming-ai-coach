@@ -4,7 +4,7 @@ import numpy as np
 from numpy.typing import NDArray
 from PIL import Image, ImageTk, ImageOps
 
-from utils.image_proc import resize_image_min_length
+from utils import image_proc
 
 class TkScreencapImage:
     def __init__(self, root, width):
@@ -37,7 +37,7 @@ class TkScreencapImage:
 
     def _post_process_image(self, img_data):
         image_resized = Image.fromarray(
-            resize_image_min_length(img_data, width=self.img_width)
+            image_proc.resize_image_min_length(img_data, width=self.img_width)
         )
 
         # Add a small white border around image

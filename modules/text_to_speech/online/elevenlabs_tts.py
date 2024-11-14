@@ -1,14 +1,12 @@
-import io
 import os
 
-import soundfile as sf
 import numpy as np
 from elevenlabs import VoiceSettings
 from elevenlabs.client import ElevenLabs, DEFAULT_VOICE
 from sounddevice import OutputStream
 
 from modules.text_to_speech.base.base_tts import BaseTTS
-from utils.audio_proc import time_stretch
+from utils import audio_proc
 
 
 class ElevenLabsTTS(BaseTTS):
@@ -42,11 +40,8 @@ class ElevenLabsTTS(BaseTTS):
 
         # NOTE: We only stretch/shrink the audio if it's more than a 1% difference
         if abs(self.speech_rate - 1.0) > 0.01:
-            tmp_wav_buffer = io.BytesIO()
-            sf.write(file=tmp_wav_buffer, data=audio_bytes, samplerate=sample_rate, format='wav')
-
-            tmp_wav_buffer.seek(0)
-            processed_audio_bytes = time_stretch(file=tmp_wav_buffer, rate=self.speech_rate)
+            tmp_wav_buffer = audio_proc.arr_to_wav_bytes(audio_data=audio_bytes, sample_rate=sample_rate)
+            processed_audio_bytes = audio_proc.time_stretch(file=tmp_wav_buffer, rate=self.speech_rate)
         else:
             processed_audio_bytes = audio_bytes
 

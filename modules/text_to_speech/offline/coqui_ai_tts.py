@@ -1,14 +1,12 @@
 import glob
-import io
 
 import numpy as np
 import torch
 from TTS.api import TTS
-import soundfile as sf
 from sounddevice import OutputStream
 
 from modules.text_to_speech.base.base_tts import BaseTTS
-from utils.audio_proc import time_stretch
+from utils import audio_proc
 
 
 class CoquiTTS(BaseTTS):
@@ -42,12 +40,9 @@ class CoquiTTS(BaseTTS):
         # NOTE: We only stretch/shrink the audio if it's more than a 1% difference
         if abs(self.speech_rate - 1.0) > 0.01:
             audio_buffer = np.array(audio_bytes_list, dtype=np.float32)
-            tmp_wav_buffer = io.BytesIO()
+            tmp_wav_buffer = audio_proc.arr_to_wav_bytes(audio_data=audio_buffer, sample_rate=sample_rate)
+            processed_audio_bytes = audio_proc.time_stretch(file=tmp_wav_buffer, rate=self.speech_rate)
 
-            sf.write(file=tmp_wav_buffer, data=audio_buffer, samplerate=sample_rate, format='wav')
-
-            tmp_wav_buffer.seek(0)
-            processed_audio_bytes = time_stretch(file=tmp_wav_buffer, rate=self.speech_rate)
             buffer_dtype = np.int16
         else:
             processed_audio_bytes = audio_bytes_list
@@ -57,6 +52,7 @@ class CoquiTTS(BaseTTS):
         with OutputStream(samplerate=sample_rate, channels=1, dtype=buffer_dtype) as stream:
             for chunk in processed_audio_bytes:
                 stream.write(chunk)
+
 
     def cleanup(self):
         pass

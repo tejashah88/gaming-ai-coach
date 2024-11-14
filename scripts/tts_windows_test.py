@@ -12,4 +12,5 @@ if __name__ == '__main__':
         rate=1.50,
         volume=1.00
     )
+
     tts_voice.speak(response_text)
