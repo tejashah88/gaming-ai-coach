@@ -35,11 +35,13 @@ This is very much a technical demo that I cobbled together within a few hours an
 OPENAI_API_KEY=<<INSERT_API_KEY_HERE>>
 ELEVEN_API_KEY=<<INSERT_API_KEY_HERE>> # Optional
 ```
-4. Setup virtual environment and dependencies
+4. Setup virtual environment with dependencies
 ```bash
-python -m venv env
-env\Scripts\activate.bat
-pip install -r requirements.txt
+# If you DO NOT have a CUDA-enabled GPU
+call setup-env-cpu.bat
+
+# If you DO have a CUDA-enabled GPU. This requires a minimum of CUDA 12.4 to be installed
+call setup-env-gpu.bat
 ```
 5. Edit the following lines in `gaming_coach.py` to your liking. If you plan to use Elevenlabs' TTS service, make sure to specify a `ELEVEN_API_KEY` key in your `.env` file.
 ```python

@@ -34,6 +34,8 @@ for audio_file_path in all_found_audio_files:
     file_ext = os.path.splitext(audio_file_path)[1][1:].strip().lower()
     combined_audio += AudioSegment.from_file(audio_file_path, format=file_ext)
 
+combined_audio.export(f'{voice_model_name}.wav', format='wav')
+
 # NOTE: Elevenlabs only allows uploading up to 25 audio samples of maximum of 10 MBs each. Therefore
 # we need to determine the bytes/second and generate audio sample chunks of the appropriate size.
 bytes_per_second = combined_audio.frame_rate * combined_audio.channels * combined_audio.sample_width

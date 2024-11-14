@@ -24,7 +24,7 @@ def resize_image_min_length(img_data: NDArray, width: int = -1, height: int = -1
         raise Exception('Resizing image by minimum length requires either the width or height to be specified')
 
     if width != -1 and height != -1:
-        raise Exception('Resizing image by minimum length cannot have both width or height to be specified')
+        raise Exception('Resizing image by minimum length cannot have both width and height to be specified')
 
     if width != -1:
         # Calculate aspect ratio such that it's greater than 1

@@ -1,50 +1,60 @@
+import io
 import os
 
-import pyaudio
+import soundfile as sf
+import numpy as np
+from elevenlabs import VoiceSettings
 from elevenlabs.client import ElevenLabs, DEFAULT_VOICE
+from sounddevice import OutputStream
 
 from modules.text_to_speech.base.base_tts import BaseTTS
+from utils.audio_proc import time_stretch
 
 
 class ElevenLabsTTS(BaseTTS):
-    def __init__(self, voice, model='eleven_turbo_v2_5', voice_settings = None):
-        self.client = ElevenLabs(
-            api_key=os.getenv('ELEVEN_API_KEY'),
-        )
-
+    def __init__(
+        self,
+        voice: str,
+        model: str = 'eleven_turbo_v2_5',
+        voice_settings: VoiceSettings | None = None,
+        rate: float = 1.0
+    ):
         self.voice = voice
         self.model = model
         self.voice_settings = voice_settings if voice_settings is not None else DEFAULT_VOICE.settings
+        self.speech_rate = rate
         self.output_format = 'pcm_24000'
 
-
-    # Source: https://github.com/elevenlabs/elevenlabs-python/issues/290#issue-2288289174
-    def _stream_audio_to_output(self, audio_iterator):
-        sample_rate = int(self.output_format.split('_')[1])
-
-        py_audio_inst = pyaudio.PyAudio()
-        stream = py_audio_inst.open(format=pyaudio.paInt16, channels=1, rate=sample_rate, output=True)
-
-        for chunk in audio_iterator:
-            if chunk:
-                stream.write(chunk)
-
-        stream.stop_stream()
-        stream.close()
-        py_audio_inst.terminate()
+        self.engine = ElevenLabs(api_key=os.getenv('ELEVEN_API_KEY'))
 
 
     def speak(self, text):
-        audio_stream = self.client.generate(
+        audio_bytes_iter = self.engine.generate(
             text=text,
             voice=self.voice,
             voice_settings=self.voice_settings,
             model=self.model,
             output_format=self.output_format,
-            stream=True
         )
 
-        self._stream_audio_to_output(audio_stream)
+        sample_rate = int(self.output_format.split('_')[1])
+        audio_bytes = np.frombuffer(b''.join(audio_bytes_iter), dtype=np.int16)
+
+        # NOTE: We only stretch/shrink the audio if it's more than a 1% difference
+        if abs(self.speech_rate - 1.0) > 0.01:
+            tmp_wav_buffer = io.BytesIO()
+            sf.write(file=tmp_wav_buffer, data=audio_bytes, samplerate=sample_rate, format='wav')
+
+            tmp_wav_buffer.seek(0)
+            processed_audio_bytes = time_stretch(file=tmp_wav_buffer, rate=self.speech_rate)
+        else:
+            processed_audio_bytes = audio_bytes
+
+
+        with OutputStream(samplerate=sample_rate, channels=1, dtype=np.int16) as stream:
+            for chunk in processed_audio_bytes:
+                stream.write(chunk)
+
 
     def cleanup(self):
         pass

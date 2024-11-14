@@ -4,17 +4,14 @@ from modules.text_to_speech.base.base_tts import BaseTTS
 
 
 class WindowsTTS(BaseTTS):
-    def __init__(self, voice_idx=0, rate=2.00, volume=1.00):
+    def __init__(
+        self,
+        voice_idx: int = 0,
+        rate: float = 1.0,
+        volume: float = 1.00,
+    ):
         self.engine = pyttsx3.init()
 
-        self.set_voice_settings(
-            voice_idx=voice_idx,
-            rate=rate,
-            volume=volume,
-        )
-
-
-    def set_voice_settings(self, voice_idx=0, rate=2.00, volume=1.00):
         # Set TTS voice
         tts_voices = self.engine.getProperty('voices')
 
@@ -23,12 +20,12 @@ class WindowsTTS(BaseTTS):
         else:
             raise Exception(f'Invalid voice index specified. Number of existing TTS voices is {len(tts_voices)}')
 
-        # Set TTS voice-specific settings
+        # Set TTS-specific settings
         self.engine.setProperty('rate', int(rate * 100))
         self.engine.setProperty('volume', volume)
 
 
-    def speak(self, text):
+    def speak(self, text: str):
         self.engine.say(text)
         self.engine.runAndWait()
 

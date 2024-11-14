@@ -3,34 +3,38 @@ from modules.text_to_speech.offline.windows_tts import WindowsTTS
 
 
 class TextToSpeechService:
-    def __init__(self, online_tts: BaseTTS | None=None, offline_tts: BaseTTS | None=None):
-        self.online_tts_service = online_tts
+    def __init__(
+        self,
+        main_tts: BaseTTS | None=None,
+        fallback_tts: BaseTTS | None=None,
+    ):
+        self.main_tts_service = main_tts
 
-        if offline_tts is not None:
-            self.offline_tts_service = offline_tts
+        if fallback_tts is not None:
+            self.fallback_tts_service = fallback_tts
         else:
-            self.offline_tts_service = WindowsTTS(
+            self.fallback_tts_service = WindowsTTS(
                 voice_idx=0,
-                rate=2.00,
-                volume=1.00
+                rate=1.0,
+                volume=1.00,
             )
 
 
-    def speak(self, text):
-        if self.online_tts_service is not None:
+    def speak(self, text: str):
+        if self.main_tts_service is not None:
             try:
-                self.online_tts_service.speak(text)
+                self.main_tts_service.speak(text)
             except Exception as ex:
-                print('An error has occurred while trying to use the online TTS service. Switching to fallback TTS service...')
+                print('An error has occurred while trying to use the main TTS service. Switching to fallback TTS service...')
                 print(ex)
 
-                self.offline_tts_service.speak(text)
+                self.fallback_tts_service.speak(text)
         else:
-            self.offline_tts_service.speak(text)
+            self.fallback_tts_service.speak(text)
 
 
     def cleanup(self):
-        if self.online_tts_service is not None:
-            self.online_tts_service.cleanup()
+        if self.main_tts_service is not None:
+            self.main_tts_service.cleanup()
 
-        self.offline_tts_service.cleanup()
+        self.fallback_tts_service.cleanup()
