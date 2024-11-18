@@ -67,8 +67,6 @@ class LLMChatbot:
             start_on='human',
         )
 
-        print(f'Number of input messages: {len(input_trimmed_messages)}')
-
         bot_response = self.chat_model.invoke(
             input_trimmed_messages,
             config={'configurable': configurable_settings}

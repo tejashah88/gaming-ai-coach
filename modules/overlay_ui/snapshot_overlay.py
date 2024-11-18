@@ -75,11 +75,6 @@ class SnapshotOverlay:
         self.response_text.set(response_text.strip())
 
 
-    # def prevent_freezing(self):
-    #     # Make sure to prevent the window from freezing by checking every 100 ms
-    #     self.root.after(100, self.prevent_freezing)
-
-
     def update_ui(self) -> None:
         self.root.update()
         self.root.update_idletasks()

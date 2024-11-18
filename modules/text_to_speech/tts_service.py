@@ -1,3 +1,5 @@
+import traceback
+
 from modules.text_to_speech.base.base_tts import BaseTTS
 from modules.text_to_speech.offline.windows_tts import WindowsTTS
 
@@ -26,7 +28,7 @@ class TextToSpeechService:
                 self.main_tts_service.speak(text)
             except Exception as ex:
                 print('An error has occurred while trying to use the main TTS service. Switching to fallback TTS service...')
-                print(ex)
+                print(traceback.format_exc())
 
                 self.fallback_tts_service.speak(text)
         else:

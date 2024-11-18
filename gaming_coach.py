@@ -116,7 +116,6 @@ coach.setup_prompts(
 # Create the snapshot overlay to display the screenshot and bot response
 snap_overlay = SnapshotOverlay()
 snap_overlay.hide_ui()
-# snap_overlay.prevent_freezing()
 
 print(f'Starting coach with following configuration...')
 CHATBOT_SETTINGS = {
@@ -132,12 +131,13 @@ CHATBOT_SETTINGS = {
     }
 }
 
-print()
 print(json.dumps(CHATBOT_SETTINGS, indent=2))
+print()
 
 coach.speak_text('Ready to coach!')
 try:
     while True:
+        print('Starting new cycle...')
         # Start a new snapshot in the session
         perf_timer.reset()
 
@@ -170,7 +170,10 @@ try:
             screencap_img=resized_frame,
             response_text=bot_response.content, # type: ignore
         )
-        print(bot_response.response_metadata)
+
+        print('LLM response metadata (for token usage):')
+        print(json.dumps(bot_response.response_metadata, indent=2))
+
         snap_overlay.show_ui()
         snap_overlay.update_ui()
 

@@ -21,5 +21,5 @@ class PerfTimer:
         elapsed_time = time.time() - self.init_time
         rounded_time = roundf(elapsed_time, self.default_precision)
 
-        print(f'    Elapsed time for "{task_name}": {rounded_time}')
+        print(f'PerfTimer: Elapsed time for "{task_name}": {rounded_time}')
         self.reset()

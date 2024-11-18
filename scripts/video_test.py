@@ -28,7 +28,6 @@ if __name__ == '__main__':
                 writer.write(frame)
 
                 elapsed_frame_time = time.time() - last_frame_time
-                print(elapsed_frame_time - dtime)
                 if elapsed_frame_time < dtime:
                     time.sleep(dtime - elapsed_frame_time)
         except KeyboardInterrupt:
