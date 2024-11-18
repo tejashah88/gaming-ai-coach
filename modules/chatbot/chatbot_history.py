@@ -1,21 +1,23 @@
 import json
 
-from langchain_core.chat_history import BaseChatMessageHistory, InMemoryChatMessageHistory
+from langchain_core.chat_history import InMemoryChatMessageHistory
+
+from langchain_core.chat_history import BaseChatMessageHistory
 from langchain_core.messages import BaseMessage
 
 
 class ChatbotHistory:
     def __init__(self):
-        self.store = {}
+        self.store: dict[str, BaseChatMessageHistory] = {}
 
 
-    def set_messages(self, session_id, messages: list[BaseMessage]):
+    def set_messages(self, session_id: str, messages: list[BaseMessage]) -> None:
         sesh_history = self.get_session_history(session_id)
         sesh_history.clear()
         sesh_history.add_messages(messages)
 
 
-    def get_messages(self, session_id):
+    def get_messages(self, session_id: str) -> list[BaseMessage]:
         sesh_history = self.get_session_history(session_id)
         return sesh_history.messages
 

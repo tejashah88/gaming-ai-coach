@@ -6,7 +6,8 @@ from PIL import Image
 
 from numpy.typing import NDArray
 
-def numpy_to_base64(np_arr):
+
+def numpy_to_base64(np_arr: NDArray) -> str:
     pil_image = Image.fromarray(np_arr)
 
     buffer = io.BytesIO()
@@ -17,7 +18,7 @@ def numpy_to_base64(np_arr):
     return encoded_img
 
 
-def resize_image_min_length(img_data: NDArray, width: int = -1, height: int = -1):
+def resize_image_min_length(img_data: NDArray, width: int = -1, height: int = -1) -> NDArray:
     pil_image = Image.fromarray(img_data)
 
     if width == -1 and height == -1:

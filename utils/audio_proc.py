@@ -1,15 +1,14 @@
 import io
-from typing import BinaryIO
-from numpy.typing import NDArray
 
 from audiostretchy.stretch import AudioStretch
 import numpy as np
 import soundfile as sf
 
-audio_stretch = AudioStretch()
+from typing import BinaryIO
+from numpy.typing import NDArray
 
 
-def arr_to_wav_bytes(audio_data: NDArray, sample_rate: int):
+def arr_to_wav_bytes(audio_data: NDArray, sample_rate: int) -> BinaryIO:
     tmp_wav_buffer = io.BytesIO()
     sf.write(file=tmp_wav_buffer, data=audio_data, samplerate=sample_rate, format='wav')
 
@@ -17,7 +16,7 @@ def arr_to_wav_bytes(audio_data: NDArray, sample_rate: int):
     return tmp_wav_buffer
 
 
-def time_stretch(path: str | None = None, file: BinaryIO | None = None, rate: float = 1):
+def time_stretch(path: str | None = None, file: BinaryIO | None = None, rate: float = 1) -> NDArray:
     if path is None and file is None:
         raise Exception('Stretching audio requires either the "path" or "file" to be specified')
 

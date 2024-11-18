@@ -6,6 +6,7 @@ from PIL import Image, ImageTk, ImageOps
 
 from utils import image_proc
 
+
 class TkScreencapImage:
     def __init__(self, root, width):
         self.img_width = width

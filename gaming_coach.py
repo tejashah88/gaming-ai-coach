@@ -143,7 +143,8 @@ try:
 
         # Make sure to hide the overlay before taking a screenshot
         snap_overlay.hide_ui()
-        time.sleep(0.200) # NOTE: We add a small amount of delay to prevent the previous screenshot from being captured in the next one
+        # NOTE: We add a small amount of delay to prevent the previous screenshot from being captured in the next one
+        time.sleep(0.200)
 
         # Grab a screencap of the current gameplay
         monitor_frame = coach.capture_monitor_screenshot()

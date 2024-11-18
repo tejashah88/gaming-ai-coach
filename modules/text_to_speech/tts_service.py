@@ -20,7 +20,7 @@ class TextToSpeechService:
             )
 
 
-    def speak(self, text: str):
+    def speak(self, text: str) -> None:
         if self.main_tts_service is not None:
             try:
                 self.main_tts_service.speak(text)
@@ -33,7 +33,7 @@ class TextToSpeechService:
             self.fallback_tts_service.speak(text)
 
 
-    def cleanup(self):
+    def cleanup(self) -> None:
         if self.main_tts_service is not None:
             self.main_tts_service.cleanup()
 

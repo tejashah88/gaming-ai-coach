@@ -1,26 +1,26 @@
 # Gaming AI Coach
 
-[![TF2 Demo](https://img.youtube.com/vi/CdrKLB4EhMk/maxresdefault.jpg)](https://youtu.be/CdrKLB4EhMk)
+[![TF2 Demo w/ Squidward](https://img.youtube.com/vi/MKgUtl2PALw/maxresdefault.jpg)](https://youtu.be/MKgUtl2PALw)
 
-An AI-powered backseat coach to fix your skill issue and/or ruin your day :). Powered by OpenAI's GPT-4o and ElevenLabs' TTS services out-of-the-box.
+An AI-powered backseat coach to fix your skill issue and/or ruin your day :). Powered by OpenAI's GPT-4o and ElevenLabs'/Coqui TTS services out-of-the-box.
 
 This project is a recreation of shounic's experiment where an AI model tells him what to do in Team Fortress 2, but with some extra stuff. If you're confused, watch his video about the original experiment: [TF2 but AI Makes EVERY Decision on What To Do
-](https://www.youtube.com/watch?v=Z2eduTNisYA). This experiment takes a screenshot of your current gameplay, feeds it into a given LLM of your choice and gives you advice on how to proceed further. The fun part about it is that you can use this with **any game** and even **customize the prompts** to your liking. I've implemented shounic's original prompts, but it's very easy to add your own. You could for example make a coach that gives advice in a sarcastic or a dramatic manner. See the last 2 sections for more information.
+](https://www.youtube.com/watch?v=Z2eduTNisYA). This experiment takes a screenshot of your current gameplay, feeds it into a given LLM of your choice and yells advice to you on how to proceed further with either the default Windows TTS or a custom TTS service.
+
+The fun part about it is that you can use this with **any game** and even **customize the prompts** to your liking. I've implemented shounic's original prompts, but it's very easy to add your own. You could for example make a coach that gives advice in a sarcastic or a dramatic manner. See the last 2 sections for more information.
+
+If you find any problems, please [make a GitHub issue](https://github.com/tejashah88/gaming-ai-coach/issues).
 
 ## Table of Contents
-* [NOTICE](#notice)
 * [Features](#features)
 * [Setup instructions](#setup-instructions)
 * [Usage instructions](#usage-instructions)
 * [Adding your own prompts](#adding-your-own-prompts)
 * [Changing to a different provider](#changing-to-a-different-provider)
 
-## NOTICE
-This is very much a technical demo that I cobbled together within a few hours and as such is subject to odd bugs or annoyances. If you find any problems, please [make a GitHub issue](https://github.com/tejashah88/gaming-ai-coach/issues).
-
 ## Features
-* Works with **OpenAI's GPT-4o** model out-of-the-box
-* Supports **Elevenlabs' Text-to-speech** service or Windows' (as a fallback)
+* Works with **OpenAI's GPT-4o** model out-of-the-box (other models and providers supported as well)
+* Supports **Elevenlabs' Text-to-speech** service, CoquiTTS (local-first AI-based) or Windows' TTS (as a fallback)
   * Can specify your own instantly cloned voice models
 * Shows a small overlay showing the taken screenshot and the model's response
 * Easy to customize and experiment with different prompts (via JSON file)
@@ -91,7 +91,6 @@ PROMPT_CONFIG_NAME = 'sarcastic-custom'
 2. Re-run the coach again with `python -m gaming_coach`
 
 ## Changing to a different provider
-This is similar to the previous section, except it'll require some knowledge of LangChain. The main tasks to complete are the following:
 1. Go to "[Supported providers and models](SUPPORTED_PROVIDERS_MODELS.md)" and double-check if your desired provider is supported. Remember that the models in question must support multimodal inputs.
 2. Add the necessary environment variables to your `.env` file for the chosen model provider.
 3. Go to `gaming_coach.py` and find the following 2 lines.
@@ -99,9 +98,9 @@ This is similar to the previous section, except it'll require some knowledge of 
 MODEL_PROVIDER = 'openai'
 MODEL_NAME = 'gpt-4o'
 ```
-4. Change the `MODEL_PROVIDER` and `MODEL_NAME` accordingly
+1. Change the `MODEL_PROVIDER` and `MODEL_NAME` accordingly
 ```python
 MODEL_PROVIDER = 'anthropic'
 MODEL_NAME = 'claude-3-5-sonnet-20240620'
 ```
-5. Re-run the coach again with `python -m gaming_coach`
+1. Re-run the coach again with `python -m gaming_coach`

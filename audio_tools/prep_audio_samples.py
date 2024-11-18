@@ -46,22 +46,22 @@ sample_length_sec = int(MAX_AUDIO_SAMPLE_SIZE / bytes_per_second)
 print(f'  Splitting into chunks of {sample_length_sec} seconds...')
 audio_segments = make_chunks(combined_audio, chunk_length=sample_length_sec * 1000)
 
-with tempfile.TemporaryDirectory() as temp_dir_name:
-    print(f'  Outputting audio segments to "{temp_dir_name}"...')
-    for (i, segment) in enumerate(audio_segments):
-        segment.export(f'audio_tools/output/split/output_{i+1}.wav', format='wav') # type: ignore
+# with tempfile.TemporaryDirectory() as temp_dir_name:
+print(f'  Outputting audio segments to "audio_tools/output/split"...')
+for (i, segment) in enumerate(audio_segments):
+    segment.export(f'audio_tools/output/split/output_{i+1}.wav', format='wav') # type: ignore
 
-    elevenlabs_client = ElevenLabs(api_key=os.getenv('ELEVEN_API_KEY'))
+elevenlabs_client = ElevenLabs(api_key=os.getenv('ELEVEN_API_KEY'))
 
-    # NOTE: Elevenlabs only allows uploading up to 25 audio samples
-    output_files = glob.glob(f'{temp_dir_name}/output_*.wav')
-    files_to_upload = output_files[:25]
-    print(f'  Creating voice model "{voice_model_name}" from {len(files_to_upload)} out of {len(output_files)} audio samples...')
+# NOTE: Elevenlabs only allows uploading up to 25 audio samples
+output_files = glob.glob(f'audio_tools/output/split/output_*.wav')
+files_to_upload = output_files[:25]
+print(f'  Creating voice model "{voice_model_name}" from {len(files_to_upload)} out of {len(output_files)} audio samples...')
 
-    voice = elevenlabs_client.clone(
-        name=voice_model_name,
-        description='',
-        files=files_to_upload,
-    )
+voice = elevenlabs_client.clone(
+    name=voice_model_name,
+    description='',
+    files=files_to_upload,
+)
 
-    print(f'  Success! Your voice model "{voice_model_name}" is ready to use')
+print(f'  Success! Your voice model "{voice_model_name}" is ready to use')

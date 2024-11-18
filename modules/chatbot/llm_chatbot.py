@@ -8,6 +8,9 @@ from langchain_core.messages import trim_messages
 from modules.chatbot.chatbot_history import ChatbotHistory
 from modules.chatbot.messages import HumanTextMessage, HumanImageMessage
 
+from typing import Any
+from langchain_core.messages import BaseMessage
+
 
 class LLMChatbot:
     def __init__(self, chat_model: BaseChatModel, keep_back_forth_cycles: int = 0):
@@ -18,7 +21,7 @@ class LLMChatbot:
         self.history: ChatbotHistory = ChatbotHistory()
 
 
-    def generate_session_id(self):
+    def generate_session_id(self) -> str:
         epoch_sec = int(time.time())
         random_salt = os.urandom(8).hex()
         return f'thread-{epoch_sec}-{random_salt}'
@@ -28,26 +31,26 @@ class LLMChatbot:
         self,
         system_message: str,
         human_messages: list[HumanTextMessage | HumanImageMessage]
-    ):
+    ) -> None:
         self.prompt_template = ChatPromptTemplate.from_messages([
             ('system', system_message),
-            ('placeholder', '{history}'),
+            ('placeholder', '{__history}'),
             ('human', [message.to_dict() for message in human_messages]),
         ])
 
 
     def send_message(
         self,
-        prompt_vars={},
-        configurable_settings={},
-    ):
+        prompt_vars: dict[str, Any] = {},
+        configurable_settings: dict[str, Any] = {},
+    ) -> BaseMessage:
         if self.keep_back_forth_cycles == 0:
             self.current_session_id = self.generate_session_id()
 
         chat_history = self.history.get_messages(self.current_session_id)
         input_messages = self.prompt_template.format_messages(**{
             **prompt_vars,
-            'history': chat_history,
+            '__history': chat_history,
         })
 
         # Preserve only the last 'n' messages, while keeping the system prompt and starting with a human message
@@ -74,6 +77,5 @@ class LLMChatbot:
         new_chat_history = input_trimmed_messages + [bot_response]
 
         self.history.set_messages(self.current_session_id, new_chat_history)
-        self.history.dump_session_history(self.current_session_id, f'test-{self.current_session_id}.json')
 
         return bot_response

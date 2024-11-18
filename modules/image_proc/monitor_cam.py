@@ -1,4 +1,5 @@
 from contextlib import contextmanager
+from typing import Any, Generator
 
 import dxcam
 from PIL import Image
@@ -28,8 +29,9 @@ class MonitorCam:
         Image.fromarray(frame).show()
 
 
+    # NOTE: See typing definition for generator: https://docs.python.org/3.10/library/typing.html#typing.Generator
     @contextmanager
-    def screencap_session(self, *args, **kwargs):
+    def screencap_session(self, *args: Any, **kwargs: Any) -> Generator[None, Any, None]:
         self.camera.start(*args, **kwargs)
 
         try:

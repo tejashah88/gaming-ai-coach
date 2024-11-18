@@ -5,14 +5,16 @@ import cv2
 
 from modules.image_proc.monitor_cam import MonitorCam
 
-print(dxcam.device_info())
-print(dxcam.output_info())
 
 if __name__ == '__main__':
+    print(dxcam.device_info())
+    print(dxcam.output_info())
+
     cam = MonitorCam()
     target_fps = 60
     dtime = 1 / target_fps
 
+    # NOTE: This is broken since the output video plays faster than normal
     with cam.screencap_session(target_fps=target_fps, video_mode=True):
         writer = cv2.VideoWriter(
             'video.mp4', cv2.VideoWriter.fourcc(*'mp4v'), target_fps, (2560, 1600)

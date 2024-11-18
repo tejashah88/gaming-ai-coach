@@ -1,11 +1,9 @@
-import numpy as np
 from modules.image_proc.monitor_cam import MonitorCam
 from modules.chatbot.llm_chatbot import LLMChatbot
 from modules.chatbot.messages import HumanTextMessage, HumanImageMessage
 
 from modules.text_to_speech.base.base_tts import BaseTTS
 from modules.text_to_speech.tts_service import TextToSpeechService
-from utils import image_proc
 
 from numpy.typing import NDArray
 
