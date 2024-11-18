@@ -26,7 +26,7 @@ class CoquiTTS(BaseTTS):
         ).to(device=self.device)
 
 
-    def speak(self, text: str):
+    def speak(self, text: str) -> None:
         # NOTE: The return type for this function is misleading as it returns a list of float32
         audio_bytes_list = self.engine.tts(
             text=text,
@@ -54,5 +54,5 @@ class CoquiTTS(BaseTTS):
                 stream.write(chunk)
 
 
-    def cleanup(self):
+    def cleanup(self) -> None:
         pass

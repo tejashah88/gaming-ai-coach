@@ -35,7 +35,7 @@ class TkScreencapImage:
         self.img_label.image = self.img_screencap # type: ignore
 
 
-    def _post_process_image(self, img_data):
+    def _post_process_image(self, img_data) -> Image.Image:
         image_resized = Image.fromarray(
             image_proc.resize_image_min_length(img_data, width=self.img_width)
         )
@@ -46,11 +46,11 @@ class TkScreencapImage:
 
 
     @property
-    def widget(self):
+    def widget(self) -> tk.Label:
         return self.img_label
 
 
-    def set_image(self, img_data: NDArray):
+    def set_image(self, img_data: NDArray) -> None:
         # Do some post processing on the image
         post_image = self._post_process_image(img_data)
 

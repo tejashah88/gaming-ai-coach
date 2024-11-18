@@ -8,7 +8,7 @@ if __name__ == '__main__':
         response_text = fp.read()
 
     tts = CoquiTTS(
-        voice_samples_path='scripts/example-data/squidward.wav',
+        voice_samples_path='scripts/example-data/voice.wav',
         rate=1.25,
     )
 

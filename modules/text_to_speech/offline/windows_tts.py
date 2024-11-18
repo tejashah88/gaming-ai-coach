@@ -25,10 +25,10 @@ class WindowsTTS(BaseTTS):
         self.engine.setProperty('volume', volume)
 
 
-    def speak(self, text: str):
+    def speak(self, text: str) -> None:
         self.engine.say(text)
         self.engine.runAndWait()
 
 
-    def cleanup(self):
+    def cleanup(self) -> None:
         self.engine.stop()

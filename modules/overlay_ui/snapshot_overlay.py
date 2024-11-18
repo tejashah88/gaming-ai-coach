@@ -10,7 +10,7 @@ from modules.overlay_ui.components.tk_screencap_image import TkScreencapImage
 
 
 # Source: https://stackoverflow.com/a/66788780
-def attach_exit_handling(root: tk.Tk):
+def attach_exit_handling(root: tk.Tk) -> None:
     # Define common handler for exit handling
     def on_request_exit():
         root.destroy()
@@ -70,7 +70,7 @@ class SnapshotOverlay:
         attach_exit_handling(self.root)
 
 
-    def set_data(self, screencap_img: NDArray, response_text: str):
+    def set_data(self, screencap_img: NDArray, response_text: str) -> None:
         self.screencap_image.set_image(screencap_img)
         self.response_text.set(response_text.strip())
 
@@ -80,14 +80,14 @@ class SnapshotOverlay:
     #     self.root.after(100, self.prevent_freezing)
 
 
-    def update_ui(self):
+    def update_ui(self) -> None:
         self.root.update()
         self.root.update_idletasks()
 
 
-    def show_ui(self):
+    def show_ui(self) -> None:
         self.root.deiconify()
 
 
-    def hide_ui(self):
+    def hide_ui(self) -> None:
         self.root.withdraw()

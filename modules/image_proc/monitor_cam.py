@@ -3,13 +3,15 @@ from contextlib import contextmanager
 import dxcam
 from PIL import Image
 
+from numpy.typing import NDArray
+
 
 class MonitorCam:
     def __init__(self, device_idx: int = 0, output_idx: int = 0):
         self.camera = dxcam.create(device_idx=device_idx, output_idx=output_idx, output_color='BGR')
 
 
-    def grab_screenshot(self):
+    def grab_screenshot(self) -> NDArray:
         frame = None
 
         while True:
@@ -21,7 +23,7 @@ class MonitorCam:
         return frame[:, :, ::-1];
 
 
-    def preview_screenshot(self):
+    def preview_screenshot(self) -> None:
         frame = self.grab_screenshot()
         Image.fromarray(frame).show()
 
@@ -36,7 +38,7 @@ class MonitorCam:
             self.camera.stop()
 
 
-    def get_screencap_frame(self):
+    def get_screencap_frame(self) -> NDArray:
         frame = None
 
         while True:

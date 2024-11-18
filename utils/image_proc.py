@@ -35,6 +35,6 @@ def resize_image_min_length(img_data: NDArray, width: int = -1, height: int = -1
         # Calculate aspect ratio such that it's greater than 1
         aspect_ratio = pil_image.width / pil_image.height
         calculated_width = int(height * aspect_ratio)
-        image_resized = pil_image.resize((height, calculated_width))
+        image_resized = pil_image.resize((calculated_width, height))
 
     return np.array(image_resized)

@@ -26,7 +26,7 @@ class ElevenLabsTTS(BaseTTS):
         self.engine = ElevenLabs(api_key=os.getenv('ELEVEN_API_KEY'))
 
 
-    def speak(self, text):
+    def speak(self, text) -> None:
         audio_bytes_iter = self.engine.generate(
             text=text,
             voice=self.voice,
@@ -51,5 +51,5 @@ class ElevenLabsTTS(BaseTTS):
                 stream.write(chunk)
 
 
-    def cleanup(self):
+    def cleanup(self) -> None:
         pass
