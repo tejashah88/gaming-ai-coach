@@ -7,40 +7,43 @@ MONITOR_IDX = 0
 
 # Sets resolution mode for resizing images prior to sending to LLM model while preserving aspect ratio.
 # NOTE: These default are meant for OpenAI but work well for most other providers.
-#   If 'no', resize screenshots such that height is 768.
+#   If 'false', resize screenshots such that height is 768.
 #     See https://platform.openai.com/docs/guides/vision#calculating-costs for more info
-#   If 'yes', resize screenshots such that width is 512.
-LOW_RESOLUTION_MODE = no
+#   If 'true', resize screenshots such that width is 512.
+LOW_RESOLUTION_MODE = false
 
 [chatbot]
 # Select company provider for LLM chatbot model.
-MODEL_PROVIDER = openai
+MODEL_PROVIDER = 'openai'
 
 # Select LLM chat model name from company provider.
-MODEL_NAME = gpt-4o
+MODEL_NAME = 'gpt-4o'
 
 # Keep at most 'n' back-and-forth interactions between human and bot. Set to 0 to always discard history.
-KEEP_BACK_FORTH_HISTORY = 0
+KEEP_BACK_FORTH_HISTORY = 3
 
 [prompts]
 # The JSON file path for the list of prompts to load from.
-PROMPTS_LIST_PATH = prompts/shounic.json
+PROMPTS_LIST_PATH = 'prompts/shounic.json'
+# PROMPTS_LIST_PATH = 'prompts/experiment.json'
 
 # The key name of the specific prompt config from the aforementioned JSON file path.
-PROMPT_CONFIG_NAME = normal
+PROMPT_CONFIG_NAME = 'sarcastic'
+# PROMPT_CONFIG_NAME = 'sassy-roaster'
 
 [text_to_speech]
 # Can specify the following based on which TTS service you want. There is a fallback mode to use Window TTS
 # in case using the main TTS service fails for any reason.
 # - 'online-ai' for ElevenLabs
-# - 'offline-ai' for CoquiTTS (XTTS v2)
+# - 'offline-ai' for Coqui TTS (XTTS v2)
 # - 'windows' for Microsoft's default TTS
-MAIN_TTS_SERVICE = online-ai
+MAIN_TTS_SERVICE = 'online-ai'
+
+[text_to_speech.offline_ai]
+# Glob path to list of example audio samples for use with voice cloning. Refer to https://pymotw.com/3/glob/ for examples.
+VOICE_SAMPLES_PATH = 'scripts/example-data/voice.wav'
 
 [text_to_speech.online_ai]
 # Internal voice model ID for ElevenLabs, can either be from pre-existing models or custom-made cloned models.
-ONLINE_VOICE_MODEL = example-voice-model
-
-[text_to_speech.offline_ai]
-# Path to list of example audio samples for use with voice cloning.
-VOICE_SAMPLES_PATH = scripts/example-data/voice.wav
+ONLINE_VOICE_MODEL = 'squidward-tentacles'
+# ONLINE_VOICE_MODEL = 'spongebob'

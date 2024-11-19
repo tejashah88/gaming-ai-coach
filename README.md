@@ -20,7 +20,7 @@ An AI-powered backseat coach to fix your skill issue and/or ruin your day :). Po
 
 This project is a recreation of shounic's experiment where an AI model tells him what to do in Team Fortress 2, but with some extra stuff. If you're confused, watch his video about the original experiment: [TF2 but AI Makes EVERY Decision on What To Do](https://www.youtube.com/watch?v=Z2eduTNisYA).
 
-This experiment takes a screenshot of your current gameplay, feeds it into a given Large Language Model (LLM) like ChatGPT 4o and yells advice to you on how to proceed further with either the default Windows TTS or a custom TTS service such as from ElevenLabs or Coqui AI.
+This experiment takes a screenshot of your current gameplay, feeds it into a given Large Language Model (LLM) like ChatGPT 4o and yells advice to you on how to proceed further with either the default Windows TTS or a custom TTS service such as from ElevenLabs or Coqui TTS.
 
 The fun part about it is that you can use this with **any game**, using **any cloned voice model** and even **customize the prompts** to your liking. I've implemented shounic's original prompts, but it's very easy to add your own. You could for example make a coach that gives advice in a sarcastic or a dramatic manner. See the last 2 sections for more information.
 
@@ -50,14 +50,14 @@ call setup-env-cpu.bat
 # If you DO have a CUDA-enabled GPU. This requires a minimum of CUDA 12.4 to be installed
 call setup-env-gpu.bat
 ```
-5. Create a copy of [`configs/example.ini`](configs/example.ini) in the same folder and refer to the comments to change it to your preferences.
+5. Create a copy of [`configs/example.toml`](configs/example.toml) in the same folder and refer to the comments to change it to your preferences.
 6. Run the gaming coach, making sure to specify your new config path.
 ```bash
-python -m gaming_coach --config configs/custom.ini
+python -m gaming_coach --config configs/custom.toml
 ```
 
 ## Usage instructions
-* `python -m gaming_coach --config path/to/config.ini` - Starts the application
+* `python -m gaming_coach --config path/to/config.toml` - Starts the application
 * `Ctrl+C` - Exits the application
 
 ## Customization
@@ -82,8 +82,8 @@ You can add new prompts by either editing the existing JSON file in `prompts/exp
 }
 ```
 
-1. Create a copy of [`configs/example.ini`](configs/example.ini) in the same folder and change `PROMPTS_LIST_PATH` and `PROMPT_CONFIG_NAME` in the `prompts` section accordingly.
-```ini
+1. Create a copy of [`configs/example.toml`](configs/example.toml) in the same folder and change `PROMPTS_LIST_PATH` and `PROMPT_CONFIG_NAME` in the `prompts` section accordingly.
+```toml
 [prompts]
 # The JSON file path for the list of prompts to load from.
 PROMPTS_LIST_PATH = prompts/custom.json
@@ -93,14 +93,14 @@ PROMPT_CONFIG_NAME = custom-coach
 ```
 2. Run the gaming coach, making sure to specify your new config path.
 ```bash
-python -m gaming_coach --config configs/custom-prompts.ini
+python -m gaming_coach --config configs/custom-prompts.toml
 ```
 
 ### Changing to different model provider
 1. Go to "[Supported providers and models](docs/SUPPORTED_PROVIDERS_MODELS.md)" and double-check if your desired provider is supported. Remember that the models in question must support multimodal inputs.
 2. Add the necessary environment variables to your `.env` file for the chosen model provider.
-3. Create a copy of [`configs/example.ini`](configs/example.ini) in the same folder and change `MODEL_PROVIDER` and `MODEL_NAME` in the `chatbot` section accordingly.
-```ini
+3. Create a copy of [`configs/example.toml`](configs/example.toml) in the same folder and change `MODEL_PROVIDER` and `MODEL_NAME` in the `chatbot` section accordingly.
+```toml
 [chatbot]
 # Select company provider for LLM chatbot model.
 MODEL_PROVIDER = anthropic
@@ -108,9 +108,9 @@ MODEL_PROVIDER = anthropic
 # Select LLM chat model name from company provider.
 MODEL_NAME = claude-3-5-sonnet-20240620
 ```
-2. Run the gaming coach, making sure to specify your new config path.
+4. Run the gaming coach, making sure to specify your new config path.
 ```bash
-python -m gaming_coach --config configs/custom-provider.ini
+python -m gaming_coach --config configs/custom-provider.toml
 ```
 
 ### Creating cloned voice model for TTS

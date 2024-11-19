@@ -33,6 +33,7 @@ dxcam==0.0.5
 einops==0.8.0
 elevenlabs==1.12.1
 encodec==0.1.1
+fancy-dataclass==0.7.3
 filelock==3.13.1
 fire==0.7.0
 fonttools==4.54.1
@@ -141,6 +142,7 @@ thinc==8.2.5
 threadpoolctl==3.5.0
 tiktoken==0.8.0
 tokenizers==0.20.3
+tomlkit==0.13.2
 torch==2.5.1+cpu
 torchaudio==2.5.1+cpu
 tqdm==4.67.0
