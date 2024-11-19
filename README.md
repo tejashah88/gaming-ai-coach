@@ -11,7 +11,7 @@ An AI-powered backseat coach to fix your skill issue and/or ruin your day :). Po
   * [Adding your own prompts](#adding-your-own-prompts)
   * [Changing to different model provider](#changing-to-different-model-provider)
   * [Creating cloned voice model for TTS](#creating-cloned-voice-model-for-tts)
-* [Known Issues](#known-issues)
+* [Known Caveats](#known-caveats)
 
 ### Video: Playing TF2 w/ Squidward as my coach (click the thumbnail below!)
 [![TF2 Demo w/ Squidward](https://img.youtube.com/vi/MKgUtl2PALw/maxresdefault.jpg)](https://youtu.be/MKgUtl2PALw)
@@ -57,8 +57,28 @@ python -m gaming_coach --config configs/custom.toml
 ```
 
 ## Usage instructions
-* `python -m gaming_coach --config path/to/config.toml` - Starts the application
-* `Ctrl+C` - Exits the application
+
+### Starting the application
+```bash
+python -m gaming_coach --config path/to/config.toml
+```
+Help command display:
+```bash
+usage: gaming_coach.py [-h] --config CONFIG_PATH
+
+The main coaching program.
+
+options:
+  -h, --help            show this help message and exit
+  --config CONFIG_PATH  The path to the config file (ends in .toml)
+```
+
+### Exiting the application
+The key binding to use is **`Ctrl+C`** as long as you're focused (i.e. last clicked) on either the terminal running the command or on the screenshot overlay.
+
+It can take some time for the current action to stop before the application can shutdown, so please be patient for a few seconds. If it doesn't do anything after that, spamming **`Ctrl+C`** can help, or killing the Python process in Task Manager.
+
+**Known bug**: There's a rare bug where sometimes fetching the response from the LLM will hang without reason. Spamming **`Ctrl+C`** or killing the task from Task manager eventually works.
 
 ## Customization
 
@@ -114,7 +134,10 @@ python -m gaming_coach --config configs/custom-provider.toml
 ```
 
 ### Creating cloned voice model for TTS
-1. Find a set of audio samples (in WAV format or converted to it) to use as the basis for your target voice to be cloned.
+1. Find a set of audio samples (in WAV format or converted to it) to use as the basis for your target voice to be cloned. Here's a few resources to start:
+   * [/g/ Voice Sample Repository](https://rentry.org/Voice-Samples)
+   * [The Sounds Resource](https://www.sounds-resource.com/)
+   * [Aiartes - VoiceAI](https://web.archive.org/web/20241006171246/https://aiartes.com/voiceai)
 2. Run the following command to generate 2 outputs: (1) A single WAV file with all audio samples combined and (2) a series of split audio samples for ElevenLabs, with each sample being no bigger than 10 MB.
    * *Glob path* refers to a normal path but with being able to use wildcard symboles to find matching files of similar paths.
    * Single asterisk (\*) allows matching similar file names and double asterisk (\*\*) allows matching similar sub-folders.
@@ -123,9 +146,11 @@ python -m gaming_coach --config configs/custom-provider.toml
 # Help command display
 python -m tools.prep_samples --help
 ```
-
+Help command display:
 ```bash
-usage: prep_samples [-h] --name VOICE_MODEL_NAME --samples SAMPLES_GLOB_PATH [--upload-to-elevenlabs]
+usage: prep_samples.py [-h] --name VOICE_MODEL_NAME --samples SAMPLES_GLOB_PATH [--upload-to-elevenlabs]
+
+Preps a set of reference audio samples for voice cloning in ElevenLabs and Coqui TTS.
 
 options:
   -h, --help            show this help message and exit
@@ -134,9 +159,8 @@ options:
   --samples SAMPLES_GLOB_PATH
                         The glob path to the set of audio samples. Refer to https://pymotw.com/3/glob/ for examples.
   --upload-to-elevenlabs
-                        Should the split audio samples be uploaded to ElevenLabs via the API key specified?
+                        Should the split audio samples be uploaded to ElevenLabs via the API key specified? (default: False)
 ```
-
 Example usage:
 ```bash
 # Use this command if you just want to generate the audio samples files
@@ -145,6 +169,7 @@ python -m tools.prep_samples --name example-voice-model --samples "path/to/voice
 # Add the '--upload-to-elevenlabs' if you want to directly create a cloned voice model via ElevenLabs' API
 python -m tools.prep_samples --name squid-test --samples "path/to/voice_samples/*.wav" --upload-to-elevenlabs
 ```
+3. Move the generated audio files from `tools/output` to an appropriate location.
 3. Create a copy of [`configs/example.toml`](configs/example.toml) in the same folder and change `MAIN_TTS_SERVICE`, `ONLINE_VOICE_MODEL` and `VOICE_SAMPLES_PATH` in the `text_to_speech` section accordingly.
 ```toml
 [text_to_speech]
@@ -167,9 +192,3 @@ VOICE_SAMPLES_PATH = tools/output/combined/example-voice-model.wav
 ```bash
 python -m gaming_coach --config configs/custom-voice.toml
 ```
-
-## Known Issues
-- Config validation is mostly non-existent, and requires decent Python experience to understand the codebase. Comments within example configuation files should suffice but are not exhaustive.
-- Only OpenAI's GPT-4o model has been tested, unsure about how nicely other model providers play with this program
-- There's a rare bug where sometimes fetching the response from the LLM will hang without reason. Spamming `Ctrl+C` eventually works.
-- Code documentation is sparse at best, needs more comments for explaining function inputs/outputs and complex parts of code.
