@@ -40,14 +40,12 @@ This project is deemed to be mostly finished so no new features will likely be i
 
 ## :star2: Features :star2:
 * Works with **OpenAI's GPT-4o** model out-of-the-box (other models and providers supported, like from Anthropic or Google).
-  * See "[Supported providers and models](docs/SUPPORTED_PROVIDERS_MODELS.md)" for more information
+  * See "[Changing to different model provider](#changing-to-different-model-provider)" for more information
 * Supports **ElevenLabs' TTS**, and Coqui TTS (local-first AI-based) and Windows' TTS (as a fallback)
-  * Can specify your own instantly cloned voice models
-* Shows a small overlay showing the taken screenshot and the model's response
+  * See "[Creating cloned voice model for TTS](#creating-cloned-voice-model-for-tts)" for more information
 * Easy to customize and experiment with different prompts (via prompts JSON file and config file)
-  * [Adding your own prompts](#adding-your-own-prompts)
-  * [Changing to different model provider](#changing-to-different-model-provider)
-  * [Creating cloned voice model for TTS](#creating-cloned-voice-model-for-tts)
+  * See "[Adding your own prompts](#adding-your-own-prompts)" for more information
+* Shows a small overlay showing the taken screenshot and the model's response
 
 
 ## :building_construction: Quick Setup :building_construction:
