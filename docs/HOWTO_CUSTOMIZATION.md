@@ -1,9 +1,9 @@
 # Customization
-
 ## Table of Contents
 * [Adding your own prompts](#adding-your-own-prompts)
 * [Changing to different model provider](#changing-to-different-model-provider)
 * [Creating cloned voice model for TTS](#creating-cloned-voice-model-for-tts)
+
 
 ## Adding your own prompts
 You can add new prompts by either editing the existing JSON file in `prompts/experiment.json` or making a new JSON file with the following format:
@@ -39,6 +39,7 @@ PROMPT_CONFIG_NAME = 'custom-coach'
 python -m gaming_coach --config configs/custom-prompts.toml
 ```
 
+
 ## Changing to different model provider
 1. Go to "[Supported providers and models](docs/SUPPORTED_PROVIDERS_MODELS.md)" and double-check if your desired provider is supported. Remember that the models in question must support multimodal inputs.
 2. Install the relevant LangChain packages from the aforementioned link.
@@ -56,6 +57,7 @@ MODEL_NAME = 'claude-3-5-sonnet-20240620'
 ```bash
 python -m gaming_coach --config configs/custom-provider.toml
 ```
+
 
 ## Creating cloned voice model for TTS
 1. Find a set of audio samples (in WAV format or converted to it) to use as the basis for your target voice to be cloned. Here's a few resources to start:
