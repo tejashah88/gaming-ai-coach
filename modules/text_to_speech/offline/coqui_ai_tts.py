@@ -45,7 +45,7 @@ class CoquiTTS(BaseTTS):
 
             buffer_dtype = np.int16
         else:
-            processed_audio_bytes = audio_bytes_list
+            processed_audio_bytes = np.array(audio_bytes_list).astype(np.float32)
             buffer_dtype = np.float32
 
 
