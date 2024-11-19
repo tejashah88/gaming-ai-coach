@@ -12,6 +12,7 @@ from utils.file_io import join_normalized_path
 SUPPORTED_EXTENSIONS = ['mp3', 'flv', 'ogg', 'wav', 'raw']
 MAX_AUDIO_SAMPLE_SIZE = 10 * 1000 * 1000 # 10 MB
 
+
 # Load environment variables
 load_dotenv('.env')
 

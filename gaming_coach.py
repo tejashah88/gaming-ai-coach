@@ -1,5 +1,7 @@
 import time
 import json
+import configparser
+import argparse
 
 from dotenv import load_dotenv
 
@@ -17,35 +19,43 @@ from utils.perf_timer import PerfTimer
 from utils import image_proc
 
 
+# Setup minimal CLI to handle config file path
+parser = argparse.ArgumentParser(prog='gaming_coach')
+parser.add_argument(
+    '--config', type=str, required=True,
+    dest='config_path',
+    help='The path to the config file (ends in *.ini)'
+)
+
+cli_args = parser.parse_args()
+
 # Load environment variables
 load_dotenv('.env')
 
+config = configparser.ConfigParser()
+config.read(cli_args.config_path)
 
 # Screenshot capture options
-GPU_IDX = 0
-MONITOR_IDX = 0
-LOW_RESOLUTION_MODE = False
+GPU_IDX             = config.getint('section', 'GPU_IDX', fallback=0)
+MONITOR_IDX         = config.getint('section', 'MONITOR_IDX', fallback=0)
+LOW_RESOLUTION_MODE = config.getboolean('section', 'LOW_RESOLUTION_MODE', fallback=False)
 
-# Coaching AI options
-MODEL_PROVIDER = 'openai'
-MODEL_NAME = 'gpt-4o'
-# PROMPTS_LIST_PATH = 'prompts/general-shounic.json'
-# PROMPT_CONFIG_NAME = 'sarcastic-shounic'
-PROMPTS_LIST_PATH = 'prompts/general-experiment.json'
-PROMPT_CONFIG_NAME = 'sassy-roaster'
+# Chatbot AI options
+MODEL_PROVIDER          = config.get('chatbot', 'MODEL_PROVIDER', fallback='openai')
+MODEL_NAME              = config.get('chatbot', 'MODEL_NAME', fallback='gpt-4o')
+KEEP_BACK_FORTH_HISTORY = config.getint('chatbot', 'KEEP_BACK_FORTH_HISTORY', fallback=0)
 
-KEEP_BACK_FORTH_HISTORY=3
+# Prompt options
+PROMPTS_LIST_PATH   = config.get('prompts', 'PROMPTS_LIST_PATH', fallback='prompts/shounic.json')
+PROMPT_CONFIG_NAME  = config.get('prompts', 'PROMPT_CONFIG_NAME', fallback='neutral')
 
-# TTS general options
-MAIN_TTS_SERVICE = 'online-ai'
-
-# TTS-specific settings
-TTS_COQUI_VOICE_SAMPLES_PATH = r'C:\Users\Tejas\Downloads\Squidward Tentacles\*.wav'
-TTS_ELEVENLABS_VOICE_MODEL = 'squidward-tentacles'
-# TTS_ELEVENLABS_VOICE_MODEL = 'spongebob'
+# TTS options
+MAIN_TTS_SERVICE                = config.get('text_to_speech', 'MAIN_TTS_SERVICE', fallback='windows')
+TTS_COQUI_VOICE_SAMPLES_PATH    = config.get('text_to_speech.offline_ai', 'VOICE_SAMPLES_PATH', fallback='scripts/example-data/voice.wav')
+TTS_ELEVENLABS_VOICE_MODEL      = config.get('text_to_speech.online_ai', 'ONLINE_VOICE_MODEL', fallback='example-voice-model')
 
 
-# Start a Text-to-speech service based on either ElevenLabs or the Windows API
+# Start a Text-to-speech service based on either ElevenLabs, Coqui AI, or the Windows API
 match MAIN_TTS_SERVICE:
     case 'online-ai':
         from modules.text_to_speech.online.elevenlabs_tts import ElevenLabsTTS
@@ -68,14 +78,24 @@ match MAIN_TTS_SERVICE:
             voice_samples_path=TTS_COQUI_VOICE_SAMPLES_PATH,
             rate=1.25,
         )
+
+    case 'windows':
+        main_tts = WindowsTTS(
+            voice_idx=0,
+            rate=1.5,
+            volume=1.00
+        )
     case _:
         main_tts = None
+
 
 # Start the performance timer
 perf_timer = PerfTimer(
     default_precision=3
 )
 
+
+# Setup the AI-based coach with necessary services
 coach = AICoach(
     # Start a virtual camera to start taking screenshots of the game
     monitor_cam = MonitorCam(
@@ -90,7 +110,7 @@ coach = AICoach(
         ),
         keep_back_forth_cycles=KEEP_BACK_FORTH_HISTORY,
     ),
-    # Setup TTS services
+    # Setup TTS services, always setting windows as the fallback
     main_tts=main_tts,
     fallback_tts=WindowsTTS(
         voice_idx=0,
@@ -155,6 +175,8 @@ try:
             # - See https://platform.openai.com/docs/guides/vision#calculating-costs for mode info
             resize_kwargs = {'height': 768}
         else:
+            # Reduce the largest side length to 512 to ensure that the image isn't split internally by the LLM model
+            # - See https://platform.openai.com/docs/guides/vision#calculating-costs for mode info
             resize_kwargs = {'width': 512}
 
         resized_frame = image_proc.resize_image_min_length(monitor_frame, **resize_kwargs)

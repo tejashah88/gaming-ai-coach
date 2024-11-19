@@ -73,7 +73,6 @@ class LLMChatbot:
         )
 
         new_chat_history = input_trimmed_messages + [bot_response]
-
         self.history.set_messages(self.current_session_id, new_chat_history)
 
         return bot_response

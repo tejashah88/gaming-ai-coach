@@ -16,7 +16,7 @@ class MonitorCam:
         frame = None
 
         while True:
-            # NOTE: Sometimes this can return 'None' if it failed to get a screencap for "some" reason
+            # NOTE: Sometimes this can return 'None' if it fails to get a screencap
             frame = self.camera.grab();
             if frame is not None:
                 break
