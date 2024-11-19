@@ -24,7 +24,7 @@ parser = argparse.ArgumentParser(prog='gaming_coach')
 parser.add_argument(
     '--config', type=str, required=True,
     dest='config_path',
-    help='The path to the config file (ends in *.ini)'
+    help='The path to the config file (ends in .ini)'
 )
 
 cli_args = parser.parse_args()

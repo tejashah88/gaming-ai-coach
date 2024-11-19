@@ -165,7 +165,7 @@ cython_debug/
 scripts/example-data/*.wav
 
 # Exclude generated WAV files from audio tooling
-audio_tools/output/**/*.wav
+tools/output/**/*.wav
 
 # Exclude generated environments from batch files
 env_cpu/

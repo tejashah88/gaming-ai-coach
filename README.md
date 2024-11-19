@@ -1,14 +1,19 @@
 # Gaming AI Coach
 
+An AI-powered backseat coach to fix your skill issue and/or ruin your day :). Powered by OpenAI's GPT-4o and ElevenLabs' TTS services out-of-the-box.
+
 ## Table of Contents
 * [Introduction](#introduction)
 * [Features](#features)
-* [Setup instructions](#setup-instructions)
+* [Quick Setup](#quick-setup)
 * [Usage instructions](#usage-instructions)
-* [Adding your own prompts](#adding-your-own-prompts)
-* [Changing to a different provider](#changing-to-a-different-provider)
+* [Customization](#customization)
+  * [Adding your own prompts](#adding-your-own-prompts)
+  * [Changing to different model provider](#changing-to-different-model-provider)
+  * [Creating cloned voice model for TTS](#creating-cloned-voice-model-for-tts)
+* [Known Issues](#known-issues)
 
-### Video: Playing TF2 Demo w/ Squidward as my coach
+### Video: Playing TF2 w/ Squidward as my coach (click the thumbnail below!)
 [![TF2 Demo w/ Squidward](https://img.youtube.com/vi/MKgUtl2PALw/maxresdefault.jpg)](https://youtu.be/MKgUtl2PALw)
 
 ## Introduction
@@ -29,7 +34,7 @@ This project is deemed to be mostly finished so no new features will likely be i
 * Shows a small overlay showing the taken screenshot and the model's response
 * Easy to customize and experiment with different prompts (via prompts JSON file and config file)
 
-## Quick Setup instructions
+## Quick Setup
 1. Clone or fork this repo
 2. Get an OpenAI API key (and/or an ElevenLabs API key)
 3. Create a `.env` file and add the following contents, substituting `<<INSERT_API_KEY_HERE>>` with your copied API key
@@ -67,7 +72,7 @@ You can add new prompts by either editing the existing JSON file in `prompts/exp
             "This is a screenshot of the current situation. In one short sentence, please tell me exactly what I should do next? Deliver your repsonse concisely, neutrally and without bias."
         ]
     },
-    "an-extra-coach": {
+    "custom-coach": {
         "system-prompt": "...",
         "user-prompts": [
             "..."
@@ -77,25 +82,43 @@ You can add new prompts by either editing the existing JSON file in `prompts/exp
 }
 ```
 
-If you decide to go with the latter option, please do the following:
-1. Go to `gaming_coach.py`, find the following 2 lines and change them accordingly.
-```python
-PROMPTS_LIST_PATH = 'prompts/general-custom.json'
-PROMPT_CONFIG_NAME = 'sarcastic-custom'
-```
-2. Re-run the coach again with `python -m gaming_coach --config configs/default.ini`
+1. Create a copy of [`configs/example.ini`](configs/example.ini) in the same folder and change `PROMPTS_LIST_PATH` and `PROMPT_CONFIG_NAME` in the `prompts` section accordingly.
+```ini
+[prompts]
+# The JSON file path for the list of prompts to load from.
+PROMPTS_LIST_PATH = prompts/custom.json
 
-### Changing to a different provider
+# The key name of the specific prompt config from the aforementioned JSON file path.
+PROMPT_CONFIG_NAME = custom-coach
+```
+2. Run the gaming coach, making sure to specify your new config path.
+```bash
+python -m gaming_coach --config configs/custom-prompts.ini
+```
+
+### Changing to different model provider
 1. Go to "[Supported providers and models](docs/SUPPORTED_PROVIDERS_MODELS.md)" and double-check if your desired provider is supported. Remember that the models in question must support multimodal inputs.
 2. Add the necessary environment variables to your `.env` file for the chosen model provider.
-3. Go to `gaming_coach.py` and find the following 2 lines.
-```python
-MODEL_PROVIDER = 'openai'
-MODEL_NAME = 'gpt-4o'
+3. Create a copy of [`configs/example.ini`](configs/example.ini) in the same folder and change `MODEL_PROVIDER` and `MODEL_NAME` in the `chatbot` section accordingly.
+```ini
+[chatbot]
+# Select company provider for LLM chatbot model.
+MODEL_PROVIDER = anthropic
+
+# Select LLM chat model name from company provider.
+MODEL_NAME = claude-3-5-sonnet-20240620
 ```
-1. Change the `MODEL_PROVIDER` and `MODEL_NAME` accordingly
-```python
-MODEL_PROVIDER = 'anthropic'
-MODEL_NAME = 'claude-3-5-sonnet-20240620'
+2. Run the gaming coach, making sure to specify your new config path.
+```bash
+python -m gaming_coach --config configs/custom-provider.ini
 ```
-1. Re-run the coach again with `python -m gaming_coach --config configs/default.ini`
+
+### Creating cloned voice model for TTS
+1. Find a set of voice samples (in WAV format or converted to it) to use as the basis for your voice cloning.
+2. Run `python -m tools/prep_samples.py`
+
+## Known Issues
+- Config validation is mostly non-existent, and requires decent Python experience to understand the codebase. Comments within example configuation files should suffice but are not exhaustive.
+- Only OpenAI's GPT-4o model has been tested, unsure about how nicely other model providers play with this program
+- There's a rare bug where sometimes fetching the response from the LLM will hang without reason. Spamming `Ctrl+C` eventually works.
+- Code documentation is sparse at best, needs more comments for explaining function inputs/outputs and complex parts of code.
