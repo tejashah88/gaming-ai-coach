@@ -37,14 +37,13 @@ This project is deemed to be mostly finished so no new features will likely be i
 ## Features
 * Works with **OpenAI's GPT-4o** model out-of-the-box (other models and providers supported, like from Anthropic or Google).
   * See "[Supported providers and models](docs/SUPPORTED_PROVIDERS_MODELS.md)" for more information
-* Supports **ElevenLabs' Text-to-speech** service, CoquiTTS (local-first AI-based) or Windows' TTS (as a fallback)
+* Supports **ElevenLabs' TTS**, and Coqui TTS (local-first AI-based) and Windows' TTS (as a fallback)
   * Can specify your own instantly cloned voice models
 * Shows a small overlay showing the taken screenshot and the model's response
 * Easy to customize and experiment with different prompts (via prompts JSON file and config file)
-  * See the following sections for more information
-    * [Adding your own prompts](#adding-your-own-prompts)
-    * [Changing to different model provider](#changing-to-different-model-provider)
-    * [Creating cloned voice model for TTS](#creating-cloned-voice-model-for-tts)
+  * [Adding your own prompts](#adding-your-own-prompts)
+  * [Changing to different model provider](#changing-to-different-model-provider)
+  * [Creating cloned voice model for TTS](#creating-cloned-voice-model-for-tts)
 
 ## Quick Setup
 1. Clone or fork this repo
@@ -93,7 +92,6 @@ It can take some time for the current action to stop before the application can 
 **Known bug**: There's a rare bug where sometimes fetching the response from the LLM will hang without reason. Spamming **`Ctrl+C`** or killing the task from Task manager eventually works.
 
 ## Customization
-
 Arguably the coolest part of this project is the ability to choose whatever LLM model, coaching prompts, and even coaching voices that you want. I encourage you to try out different models like Anthropic's Claude 3.5 Sonnet or Meta's open-weights Llama 3.2, or perhaps try making your own prompts to fit your ideal coaching personality, or even trying out different voice models like Jack Sparrow or Squidward.
 
 However, this customization comes with heavy premise of responsible and ethical AI usage of this project. If you haven't read it already, **read the [AI Safety Disclaimer](#warning-ai-safety-disclaimer-warning)** and understand that any misuse of this project beyond educational/entertainment purposes is NOT allowed by the original developer.
@@ -122,19 +120,17 @@ If you want to learn how to add your own custom prompts, click the following tut
 * Tutorial for: [Adding your own prompts](docs/HOWTO_CUSTOMIZATION.md#adding-your-own-prompts)
 
 ### Changing to different model provider
-While OpenAI's GPT-4o model performs fairly well for 95% of use cases of this project, it's easy to change it to any multimodal LLM model out in the market, whether it's proprietary or open-source/open-weights! LLMs can have varying underlining personalities that guide their superior programming and show up even with a selected system prompt, which can be interesting to experiment.
-
-If you want to check out the list of supported model providers, see the "[Supported providers and models](docs/SUPPORTED_PROVIDERS_MODELS.md)" section for more information. Note that this list is non-exhaustive and none of the other providers have been tested as of November 2024.
+While OpenAI's GPT-4o model performs fairly well for 95% of use cases of this project, it's easy to change it to any multimodal LLM model out in the market, whether it's proprietary or open-source/open-weights! Check out the "[Supported providers and models](docs/SUPPORTED_PROVIDERS_MODELS.md)" section for the list of supported model providers. Note that this list is non-exhaustive and none of the other providers have been tested as of November 2024.
 
 If you want to learn how to change to using a different model provider, click the following tutorial link below:
 * Tutorial for: [Changing to different model provider](docs/HOWTO_CUSTOMIZATION.md#changing-to-different-model-provider)
 
-### Creating cloned voice model for TTS
-Hearing from Windows' TTS service can become monotonous, but it doesn't have to be. Thanks to the ability of voice cloning, it's possible to have your favorite fictional and/or realistic characters be your coach.
+### Creating cloned voice model for Text-to-Speech
+Hearing from Microsoft Sam giving you coaching advice can become monotonous really quick, but it doesn't have to be. Thanks to the ability of voice cloning, it's possible to have your favorite fictional and/or realistic characters be your coach.
 
-Note that this requires either a paid ElevenLabs account (about $5/month for 30 minutes of generated audio) or a CUDA-enabled GPU to run the local-first AI-powered TTS services (you can run with a CPU but it's painfully slow).
+Note that this requires either a paid ElevenLabs account (about $5/month for 30 minutes of generated audio) or a CUDA-enabled GPU to run the local-first AI-powered TTS services (you can run with a CPU but it's painfully slow). This also requires downloading a set of clean audio samples of the voice to be cloned for the best experience.
 
-This also requires downloading a set of clean audio samples of the voice to be cloned for the best experience. Here's a few starting resources for making your own voice clones. Use them responsibly!
+Here's a few starting resources for making your own voice clones. Use them responsibly!
   * [/g/ Voice Sample Repository](https://rentry.org/Voice-Samples)
   * [The Sounds Resource](https://www.sounds-resource.com/)
   * [Aiartes - VoiceAI](https://web.archive.org/web/20241006171246/https://aiartes.com/voiceai)
