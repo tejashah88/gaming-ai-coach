@@ -115,11 +115,11 @@ clarity as possible.
 #### User Prompt(s)
 ```
 This is a screenshot of the current situation. In one short sentence, please tell me exactly what
-I should do next? Deliver your repsonse in a sarcastic way. Make sure to still give advice though.
+I should do next? Deliver your response in a sarcastic way. Make sure to still give advice though.
 ```
 
 If you want to learn how to add your own custom prompts, click the following tutorial link below:
-* Tutorial for: [Adding your own prompts](docs\HOWTO_CUSTOMIZATION.md#adding-your-own-prompts)
+* Tutorial for: [Adding your own prompts](docs/HOWTO_CUSTOMIZATION.md#adding-your-own-prompts)
 
 ### Changing to different model provider
 While OpenAI's GPT-4o model performs fairly well for 95% of use cases of this project, it's easy to change it to any multimodal LLM model out in the market, whether it's proprietary or open-source/open-weights! LLMs can have varying underlining personalities that guide their superior programming and show up even with a selected system prompt, which can be interesting to experiment.
@@ -127,7 +127,7 @@ While OpenAI's GPT-4o model performs fairly well for 95% of use cases of this pr
 If you want to check out the list of supported model providers, see the "[Supported providers and models](docs/SUPPORTED_PROVIDERS_MODELS.md)" section for more information. Note that this list is non-exhaustive and none of the other providers have been tested as of November 2024.
 
 If you want to learn how to change to using a different model provider, click the following tutorial link below:
-* Tutorial for: [Changing to different model provider](docs\HOWTO_CUSTOMIZATION.md#changing-to-different-model-provider)
+* Tutorial for: [Changing to different model provider](docs/HOWTO_CUSTOMIZATION.md#changing-to-different-model-provider)
 
 ### Creating cloned voice model for TTS
 Hearing from Windows' TTS service can become monotonous, but it doesn't have to be. Thanks to the ability of voice cloning, it's possible to have your favorite fictional and/or realistic characters be your coach.
@@ -140,4 +140,4 @@ This also requires downloading a set of clean audio samples of the voice to be c
   * [Aiartes - VoiceAI](https://web.archive.org/web/20241006171246/https://aiartes.com/voiceai)
 
 If you want to learn how to create your own cloned voice models, click the following tutorial link below:
-* Tutorial for: [Creating your own cloned voice models](docs\HOWTO_CUSTOMIZATION.md#creating-cloned-voice-model-for-tts)
+* Tutorial for: [Creating your own cloned voice models](docs/HOWTO_CUSTOMIZATION.md#creating-cloned-voice-model-for-tts)
