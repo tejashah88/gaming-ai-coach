@@ -1,6 +1,3 @@
-
-
-
 # Supported providers and models
 The list of models has the baseline assumption that they support multimodal image inputs.
 
