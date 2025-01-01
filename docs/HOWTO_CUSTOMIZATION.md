@@ -25,7 +25,7 @@ You can add new prompts by either editing the existing JSON file in `prompts/exp
 }
 ```
 
-1. Create a copy of [`configs/example.toml`](configs/example.toml) in the same folder and change `PROMPTS_LIST_PATH` and `PROMPT_CONFIG_NAME` in the `prompts` section accordingly.
+1. Create a copy of [`configs/example.toml`](../configs/example.toml) in the same folder and change `PROMPTS_LIST_PATH` and `PROMPT_CONFIG_NAME` in the `prompts` section accordingly.
 ```toml
 [prompts]
 # The JSON file path for the list of prompts to load from.
@@ -41,10 +41,10 @@ python -m gaming_coach --config configs/custom-prompts.toml
 
 
 ## Changing to different model provider
-1. Go to "[Supported providers and models](docs/SUPPORTED_PROVIDERS_MODELS.md)" and double-check if your desired provider is supported. Remember that the models in question must support multimodal inputs.
+1. Go to "[Supported providers and models](SUPPORTED_PROVIDERS_MODELS.md)" and double-check if your desired provider is supported. Remember that the models in question must support multimodal inputs.
 2. Install the relevant LangChain packages from the aforementioned link.
 3. Add the necessary environment variables to your `.env` file for the chosen model provider.
-4. Create a copy of [`configs/example.toml`](configs/example.toml) in the same folder and change `MODEL_PROVIDER` and `MODEL_NAME` in the `chatbot` section accordingly.
+4. Create a copy of [`configs/example.toml`](../configs/example.toml) in the same folder and change `MODEL_PROVIDER` and `MODEL_NAME` in the `chatbot` section accordingly.
 ```toml
 [chatbot]
 # Select company provider for LLM chatbot model.
@@ -96,7 +96,7 @@ python -m tools.prep_samples --name example-voice-model --samples "path/to/voice
 python -m tools.prep_samples --name squid-test --samples "path/to/voice_samples/*.wav" --upload-to-elevenlabs
 ```
 3. Move the generated audio files from `tools/output` to an appropriate location.
-4. Create a copy of [`configs/example.toml`](configs/example.toml) in the same folder and change `MAIN_TTS_SERVICE`, `ONLINE_VOICE_MODEL` and `VOICE_SAMPLES_PATH` in the `text_to_speech` section accordingly.
+4. Create a copy of [`configs/example.toml`](../configs/example.toml) in the same folder and change `MAIN_TTS_SERVICE`, `ONLINE_VOICE_MODEL` and `VOICE_SAMPLES_PATH` in the `text_to_speech` section accordingly.
 ```toml
 [text_to_speech]
 # Can specify the following based on which TTS service you want. There is a fallback mode to use Window TTS

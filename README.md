@@ -4,12 +4,12 @@ An AI-powered backseat coach to fix your skill issue and/or ruin your day :). Po
 
 ## Table of Contents
 * [:warning: AI Safety Disclaimer :warning:](#warning-ai-safety-disclaimer-warning)
-* [Introduction](#thought_balloon-introduction-thought_balloon)
+* [Introduction](#thoughtballoon-introduction-thoughtballoon)
 * [Features](#star2-features-star2)
-* [Quick Setup](#building_construction-quick-setup-building_construction)
+* [Quick Setup](#buildingconstruction-quick-setup-buildingconstruction)
 * [Usage instructions](#computer-usage-instructions-computer)
-  * [Starting the application](#red_car-starting-the-application-red_car)
-  * [Exiting the application](#stop_sign-exiting-the-application-stop_sign)
+  * [Starting the application](#redcar-starting-the-application-redcar)
+  * [Exiting the application](#stopsign-exiting-the-application-stopsign)
 * [Customization](#gear-customization-gear)
   * [Adding your own prompts](#memo-adding-your-own-prompts-memo)
   * [Changing to different model provider](#robot-changing-to-different-model-provider-robot)
@@ -40,11 +40,11 @@ This project is deemed to be mostly finished so no new features will likely be i
 
 ## :star2: Features :star2:
 * Works with **OpenAI's GPT-4o** model out-of-the-box (other models and providers supported, like from Anthropic or Google).
-  * See "[Changing to different model provider](#changing-to-different-model-provider)" for more information
+  * See "[Changing to different model provider](#robot-changing-to-different-model-provider-robot)" for more information
 * Supports **ElevenLabs' TTS**, and Coqui TTS (local-first AI-based) and Windows' TTS (as a fallback)
-  * See "[Creating cloned voice model for TTS](#creating-cloned-voice-model-for-tts)" for more information
+  * See "[Creating cloned voice model for TTS](#loudspeaker-creating-cloned-voice-model-for-text-to-speech-loudspeaker)" for more information
 * Easy to customize and experiment with different prompts (via prompts JSON file and config file)
-  * See "[Adding your own prompts](#adding-your-own-prompts)" for more information
+  * See "[Adding your own prompts](#memo-adding-your-own-prompts-memo)" for more information
 * Shows a small overlay showing the taken screenshot and the model's response
 
 
