@@ -1,5 +1,5 @@
 # Gaming AI Coach
-An AI-powered backseat coach to fix your skill issue and/or ruin your day :). Powered by OpenAI's GPT-4o and ElevenLabs' TTS services out-of-the-box.
+An AI-powered backseat coach to fix your skill issue and/or ruin your day :). Supports popular models from OpenAI, Anthropic and Google and self-hosted. Customizable prompting and voice cloning thanks to ElevenLabs and Coqui TTS.
 
 
 ## Table of Contents
@@ -29,9 +29,9 @@ This project serves as an educational/entertainment tool for personal, non-comme
 
 
 ## :thought_balloon: Introduction :thought_balloon:
-This project is a recreation of shounic's experiment where an AI model tells him what to do in Team Fortress 2, but with some extra stuff. If you're confused, watch his video about the original experiment: [TF2 but AI Makes EVERY Decision on What To Do](https://www.youtube.com/watch?v=Z2eduTNisYA).
+This project is a recreation of shounic's experiment where an AI model tells him what to do in Team Fortress 2, but with some extra goodies. If you're confused, watch his video about the original experiment: [TF2 but AI Makes EVERY Decision on What To Do](https://www.youtube.com/watch?v=Z2eduTNisYA).
 
-This experiment takes a screenshot of your current gameplay, feeds it into a given Large Language Model (LLM) like ChatGPT 4o and yells advice to you on how to proceed further with either the default Windows TTS or a custom TTS service such as from ElevenLabs or Coqui TTS.
+This experiment takes a screenshot of your current gameplay, feeds it into a given Large Language Model (LLM) like ChatGPT-4o and yells advice to you on how to proceed further with either the default Windows TTS or a custom TTS service such as from ElevenLabs or Coqui TTS.
 
 The fun part about it is that you can use this with **any game**, using **any cloned voice model** and even **customize the prompts** to your liking. I've implemented shounic's original prompts, but it's very easy to add your own. You could for example make a coach that gives advice in a sarcastic or a dramatic manner. See the last 2 sections for more information.
 

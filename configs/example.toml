@@ -27,7 +27,7 @@ KEEP_BACK_FORTH_HISTORY = 0
 PROMPTS_LIST_PATH = 'prompts/shounic.json'
 
 # The key name of the specific prompt config from the aforementioned JSON file path.
-PROMPT_CONFIG_NAME = 'normal'
+PROMPT_CONFIG_NAME = 'neutral'
 
 [text_to_speech]
 # Can specify the following based on which TTS service you want. There is a fallback mode to use Window TTS
